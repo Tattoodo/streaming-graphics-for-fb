@@ -1,0 +1,24 @@
+{
+  "name": "ngj16-streaming-graphics",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Julian <julian@studio42.dk>"
+  ],
+  "license": "n/a",
+  "homepage": "https://github.com/johncoffee/ngj16-streaming-graphics",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material": "^1.0.7",
+    "angular": "^1.5.3",
+    "moment": "^2.12.0"
+  }
+}

@@ -1,0 +1,93 @@
+html, body {
+    background-color: #0f0;
+}
+body {
+    margin: 0;
+}
+._bold {
+}
+
+.box-bottom {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: #fff;
+}
+.box-bottom .left,
+.box-bottom .center,
+.box-bottom .right {
+    height: 8rem; /*align with height of bottom*/
+}
+
+.box-top {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    color: #fff;
+    font-weight:bold;
+    font-size: 1.5rem;
+    height: 2rem;
+}
+.box-top .left {
+    background: #7FD3D1;
+    text-align: center;
+}
+.box-top .center {
+    background: #225378;
+}
+.box-top .top-header {
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+.box-top .right {
+    background: #7FD3D1;
+    text-align: center;
+}
+
+.box-attention {
+    padding: 0 0 0 2rem;
+    min-height: 0.5rem;
+    background: #E88100;
+}
+
+.triangle-up:first-child {
+    border-bottom: 2.4rem solid #225378;
+    background: #7FD3D1;
+}
+.triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 5rem solid transparent;
+    border-right: 0 solid transparent;
+    border-bottom: 2.4rem solid #7FD3D1;
+    background: #225378;
+}
+
+.pause-box {
+    display: block;
+    position: absolute;
+    top: 2.4rem;
+    bottom: 8rem;/*align with height of bottom*/
+    width: 100%;
+    background: #225378;
+    color: #fff;
+}
+.pause-heading {
+    font-size: 4rem;
+}
+
+twitter {
+    display: block;
+    padding: 1rem;
+    font-size: 1.025rem;
+}
+
+attention {
+    display: block;
+}
+
+attention .text {
+    font-size: 1.6rem;
+    color: #fff;
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>streaming graphics</title>
+<link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body ng-app="app">
+
+<div class="box-top">
+    <div layout="row">
+        <div flex="30" class="left _bold">
+            UP NEXT:
+        </div>
+        <div flex="60" class="center">
+            <div layout="row" layout-align="center center">
+                <div flex class="triangle-up"></div>
+                <div flex-grow="" class="top-header">
+                    <up-next></up-next>
+                </div>
+                <div flex class="triangle-up"></div>
+            </div>
+        </div>
+        <div flex="30" class="right">
+            <deadline></deadline>
+        </div>
+    </div>
+</div>
+
+<pause></pause>
+
+<div class="box-bottom">
+    <div class="box-attention">
+        <attention></attention>
+    </div>
+    <div layout="row">
+        <div flex="35" class="left">
+            <sponsors></sponsors>
+        </div>
+        <div flex="" class="center" layout="row" layout-align="center center"
+            style="background: transparent url(image/ngjlogo.png) no-repeat; background-position: center center;">
+        </div>
+        <div flex="35" class="right">
+            <twitter></twitter>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--libraries-->
+<script src="bower_components/moment/min/moment.min.js"></script>
+
+<!--frameverks-->
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-material/angular-material.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+
+
+<script src="scene1.js"></script>
+</body>
+</html>
