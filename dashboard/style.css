@@ -1,0 +1,30 @@
+html, body {
+    background-color: #0f0;
+}
+body {
+    margin: 0;
+}
+
+
+.cell {
+    box-shadow: #fff -1px -1px 0px;
+}
+
+.cell__number {
+    font-size: 3.3rem;
+    margin-bottom: 1rem;
+    color: #fafaf3;
+    font-family: arial black, sans-serif;
+}
+
+.reaction {
+    display: inline-block;
+    background: transparent url("images/new_facebook_reactions_by_stayka007-d9t4y30.png") no-repeat;
+    height: 50px;
+    width: 50px;
+    background-size: 310px;
+}
+
+.reaction--like {
+    background-position: 4px -7px;
+}

@@ -9,12 +9,15 @@ angular
 // settings
 angular.module('app').component('upNext', {
         template: `<div layout="row">
-    <div flex="30">
-        Up next   
+    <div flex="initial">
+     <md-input-container>
+        <label>Object ID</label>
+        <input ng-model="upNext" size=45 ng-init="upNext = $ctrl.upNext">        
+      </md-input-container>                  
     </div>
-    <div flex="70">
-        <input ng-model="upNext" size=45 ng-init="upNext = $ctrl.upNext">   
-        <button class="md-button md-raised" ng-click="$ctrl.upNext = upNext">Apply</button>
+    <div  flex="initial">
+        <p>
+            <md-button ng-click="$ctrl.upNext = upNext">Apply</md-button>
     </div>
 </div>`,
         controller: function (Storage) {

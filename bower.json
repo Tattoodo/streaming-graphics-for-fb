@@ -17,8 +17,9 @@
     "tests"
   ],
   "dependencies": {
-    "angular-material": "^1.0.7",
-    "angular": "^1.5.3",
-    "moment": "^2.12.0"
+    "angular": "^1.5.8",
+    "angular-material": "^1.1.1",
+    "moment": "^2.12.0",
+    "angular-count-to": "git@github.com:fluenti/angular-count-to.git"
   }
 }
