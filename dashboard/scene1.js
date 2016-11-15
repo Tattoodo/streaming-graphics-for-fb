@@ -33,10 +33,11 @@ angular.module('app').component('cell', {
     <div class="cell__number">
         <div class="reaction reaction--like"></div> 
         <span count-to="{{$ctrl.number}}"
+              ng-class="{'fade-red': $ctrl.number < $ctrl.prevValue, 'fade-green': $ctrl.number > $ctrl.prevValue}"
               value="{{$ctrl.prevValue}}"
               filter="number"
-              filter-param-1="2"
-              duration="0.5">
+              filter-param-1="2"             
+              duration="0.333">
         </span>
     </div>
 </div>

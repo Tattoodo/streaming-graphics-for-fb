@@ -5,12 +5,23 @@ body {
     margin: 0;
 }
 
+.fade-green{
+    color: #7cff99;
+}
+.fade-red {
+    color: #ff9599;
+}
+.fade-green, .fade-red {
+    transition: color 0.333s ease-out;
+}
 
 .cell {
     box-shadow: #fff -1px -1px 0px;
 }
 
 .cell__number {
+    text-shadow: 2px 3px 2px rgba(0,0,0,0.45);
+
     font-size: 3.3rem;
     margin-bottom: 1rem;
     color: #fafaf3;
