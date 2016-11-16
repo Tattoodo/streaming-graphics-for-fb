@@ -1,5 +1,40 @@
 // resizeViewPort(1024, 576);
 
+if (localStorage.color) {
+    var e = document.createElement(`style`)
+    e.innerHTML = `        
+            html,body {
+                background: #aaa;
+            }        
+        `
+    document.head.appendChild(e);
+}
+window.addEventListener("keydown", (event) => {
+    if (event.keyCode == 68) {
+        localStorage.color = (localStorage.color) ? "" : "1";
+        var e = document.createElement(`style`)
+        e.innerHTML = `        
+            html,body {
+                background: #aaa;
+            }        
+        `
+        document.head.appendChild(e);
+    }
+});
+
+window.addEventListener("message", function receiveMessage(event) {
+    if (event.data && event.data.type === "bgcolor") {
+        var e = document.createElement(`style`)
+        e.innerHTML = `        
+            html,body {
+                background: ${event.data.color};
+            }        
+        `
+        document.head.appendChild(e);
+    }
+}, false);
+
+
 window.addEventListener("message", function receiveMessage(event) {
     if (event.data && event.data.type === "resize") {
         resizeViewPort(event.data.x, event.data.y);
@@ -79,20 +114,27 @@ angular.module('app').component('cell', {
 </div>
 `
 })
+
 angular.module('app').component('percentages', {
         template: `
                 
     <div layout="row" style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.wow" reaction="wow" class="cell" pulsate="true"></cell>
-        <cell layout="column" flex="50" number="$ctrl.angry" reaction="angry" class="cell"></cell>
+        <cell layout="column" flex="50" number="$ctrl.wow" reaction="wow" class="cell" pulsate="$ctrl.isBiggest('wow')"></cell>
+        <cell layout="column" flex="50" number="$ctrl.angry" reaction="angry" class="cell" pulsate="$ctrl.isBiggest('angry')"></cell>
     </div>        
     <div layout="row"  style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.love" reaction="love" class="cell"></cell>
-        <cell layout="column" flex="50" number="$ctrl.like" reaction="like" class="cell"></cell>
+        <cell layout="column" flex="50" number="$ctrl.love" reaction="love" class="cell" pulsate="$ctrl.isBiggest('love')"></cell>
+        <cell layout="column" flex="50" number="$ctrl.like" reaction="like" class="cell" pulsate="$ctrl.isBiggest('like')"></cell>
     </div>
 
 `,
         controller: function ($http) {
+
+            this.isBiggest = function (name) {
+                return ['wow', 'angry', 'love', 'like'].reduce((bestKey, currentValue) => {
+                    return (!bestKey || this[bestKey] > this[currentValue]) ? bestKey : currentValue;
+                }) === name;
+            }
 
             this.$onInit = function () {
                 this.getVotes()

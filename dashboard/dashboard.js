@@ -75,78 +75,43 @@ angular.module('app').component('attention', {
 );
 
 angular.module('app').component('deadline', {
-        template: `<div layout="row">
-    <div flex="30">
-        Deadline    
+        template: `
+<div layout="row" layout-align="left center" layout-margin="10">
+    <div flex="initial">
+        Chroma key (color) 
     </div>
-    <div flex="70">
-        <input type="text" ng-model="deadline" ng-init="deadline = $ctrl.deadline" size="45">
-        <button class="md-button md-raised" ng-click="$ctrl.deadline = deadline">Apply</button><br>
-        <code>2016-04-10T14:00:00.0200</code>    
+    <div flex="initial">        
+        <input type="color" ng-model="$ctrl.input">                
     </div>
-</div>`,
+    <div flex="initial" ng-bind="$ctrl.input"></div>
+    <div flex="initial">        
+        <button class="md-button" ng-click="$ctrl.apply($ctrl.input)">Apply</button><br>         
+    </div>
+</div>
+`,
         controller: function (Storage) {
-            const defaultDate = "2016-04-10T14:00:00.0200";
+            this.defaultDate = "#0f0";
+            this.input = localStorage.deadline || this.defaultDate;
 
-            Object.defineProperty(this, 'deadline', {
-                get: function () {
-                    return localStorage.deadline;
-                },
-                set: function (value) {
-                    localStorage.deadline = value;
-
-                    var dateObj = new Date(value);
-                    if (!isNaN(dateObj.getTime())) {
-                        if (Storage.sceneRef) {
-                            Storage.sceneRef.postMessage({
-                                type: "deadline",
-                                date: dateObj,
-                            }, location + 'scene1.html');
-                        }
-                        else {
-                            console.info("deadline sending: scene not open?");
-                        }
-                    }
-                }
-            })
-        }
-    }
-);
-
-angular.module('app').component('pause', {
-        template: `<div layout="row">
-    <div flex="30">
-           
-    </div>
-    <div flex="70">
-        <input ng-model="$ctrl.pause" type="checkbox"> Show pause screen (eg. "We'll be back..")    
-    </div>
-</div>`,
-        controller: function (Storage) {
-            Object.defineProperty(this, 'pause', {
-                get: function () {
-                    return (localStorage.pause == 1);
-                },
-                set: function (value) {
-                    localStorage.pause = (value == 1) ? '1' : '';
+            this.apply = function (value) {
+                localStorage.deadline = value;
+                if (value) {
                     if (Storage.sceneRef) {
                         Storage.sceneRef.postMessage({
-                            type: "pause",
-                            pause: !!value
+                            type: "bgcolor",
+                            color: localStorage.deadline,
                         }, location + 'scene1.html');
                     }
                     else {
-                        console.info("window not open. pause");
+                        console.warn("deadline sending: scene not open?");
                     }
                 }
-            });
-
-            if (angular.isUndefined(localStorage.pause)) {
-                this.pause = 1; // set default value (of the scene) in localStorage
             }
+
         }
     }
 );
+
 
 
 
