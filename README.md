@@ -2,27 +2,22 @@
 
 ## Installation
 
-run
-`npm install`
-and
-`bower install`
- to install Express, AngularJS and other dependencies
+    npm install
+    
+and 
 
+    bower install
+    
+to install Express, AngularJS and other dependencies
 
-## Run on Windows
+### Run the dashboard on Windows
 
-Run this command to set super secret keys as environment variables, and run then node application.
+first run the NodeJS program, then start chrome in app mode
 
-`
-set TWITTER_CONSUMER_KEY=zzz && set TWITTER_CONSUMER_SECRET=zzz && set TWITTER_ACCESS_TOKEN_KEY=zzz && set TWITTER_ACCESS_TOKEN_SECRET=zzz && npm start
-`
-or
-`
-export TWITTER_CONSUMER_KEY=zzz && export TWITTER_CONSUMER_SECRET=zzz && export TWITTER_ACCESS_TOKEN_KEY=zzz && export TWITTER_ACCESS_TOKEN_SECRET=zzz && npm start
-`
+    chrome.exe --app=http://localhost:8080
 
-Then start chrome in App Mode `chrome.exe --app=http://localhost:8080`
-or
-`
-cd /Applications/Google\ Chrome.app/Contents/MacOS; ./Google\ Chrome --app=http://localhost:8080
-`
+### Run the dashboard on Mac OS
+
+first run the NodeJS program, then start chrome in app mode
+
+    cd /Applications/Google\ Chrome.app/Contents/MacOS; ./Google\ Chrome --app=http://localhost:8080
