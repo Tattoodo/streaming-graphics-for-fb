@@ -20,25 +20,56 @@ angular.module('app').component('cell', {
     bindings: {
         number: "<"
     },
-    controller: function () {
+    controller: function ($element) {
+        // let el = null;
+        // let greenClass =  'green-fade';
+        // let redClass =  'red-fade';
+        //
+        // this.$postLink = function () {
+        //     el = $element.find('animated-text');
+        // }
+
         this.$onChanges = function (changes) {
             if (changes.number) {
                 this.prevValue = changes.number.previousValue;
                 this.number = changes.number.currentValue;
+
+                // if (el) {
+                //     setTimeout(()=> {
+                //         this.applyColours()
+                //     },10);
+                // }
+
             }
         }
+
+        // this.applyColours = function () {
+        //     el.removeClass(greenClass)
+        //     el.removeClass(redClass)
+        //
+        //     if (this.number < this.prevValue) {
+        //         el.addClass(redClass)
+        //     }
+        //     else if (this.number >= this.prevValue) {
+        //         el.addClass(greenClass)
+        //     }
+        //     else {
+        //         console.warn(this.number, this.prevValue, this.number === this.prevValue)
+        //     }
+        // }
+
     },
     template: `
 <div layout="row" layout-align="center end" layout-fill>
     <div class="cell__number">
         <div class="reaction reaction--like"></div> 
-        <span count-to="{{$ctrl.number}}"
-              ng-class="{'fade-red': $ctrl.number < $ctrl.prevValue, 'fade-green': $ctrl.number > $ctrl.prevValue}"
+        <animated-text 
+              count-to="{{$ctrl.number}}"                            
               value="{{$ctrl.prevValue}}"
               filter="number"
               filter-param-1="2"             
               duration="0.333">
-        </span>
+        </animated-text> %
     </div>
 </div>
 `

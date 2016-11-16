@@ -5,15 +5,37 @@ body {
     margin: 0;
 }
 
-.fade-green{
-    color: #7cff99;
+.cell__number {
+    color: #f8fdff;
 }
-.fade-red {
-    color: #ff9599;
+
+.red-fade {
+    animation: animationFrames ease-in .3s;
+    animation-iteration-count: 1;
 }
-.fade-green, .fade-red {
-    transition: color 0.333s ease-out;
+@keyframes animationFrames {
+    0% {
+        color: #ff2222;
+    }
+    100% {
+        color: inherit;
+    }
 }
+
+.green-fade {
+    animation: animationFrames2 ease-in .3s;
+    animation-iteration-count: 1;
+}
+@keyframes animationFrames2 {
+    0% {
+        color: #249642;
+    }
+    100% {
+        color: inherit;
+    }
+}
+
+
 
 .cell {
     box-shadow: #fff -1px -1px 0px;
@@ -24,7 +46,7 @@ body {
 
     font-size: 3.3rem;
     margin-bottom: 1rem;
-    color: #fafaf3;
+
     font-family: arial black, sans-serif;
 }
 
