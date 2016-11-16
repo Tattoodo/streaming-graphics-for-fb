@@ -3,11 +3,7 @@
 ## Installation
 
     npm install
-    
-and 
 
-    bower install
-    
 to install Express, AngularJS and other dependencies
 
 ### Run the dashboard
