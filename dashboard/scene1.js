@@ -68,7 +68,7 @@ angular.module('app').component('cell', {
               count-to="{{$ctrl.number}}"                            
               value="{{$ctrl.prevValue}}"
               filter="number"
-              filter-param-1="2"             
+              filter-param-1="1"             
               duration="0.333">
         </animated-text> %
     </div>
