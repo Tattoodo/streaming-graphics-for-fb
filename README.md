@@ -10,14 +10,16 @@ and
     
 to install Express, AngularJS and other dependencies
 
-### Run the dashboard on Windows
+### Run the dashboard
 
-first run the NodeJS program, then start chrome in app mode
+first run the NodeJS program
+
+    npm start
+
+then, in a new terminal, start chrome in app mode with this command (for Mac OS)
+
+    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --app=http://localhost:8080
+
+on windows, start chrome this way
 
     chrome.exe --app=http://localhost:8080
-
-### Run the dashboard on Mac OS
-
-first run the NodeJS program, then start chrome in app mode
-
-    cd /Applications/Google\ Chrome.app/Contents/MacOS; ./Google\ Chrome --app=http://localhost:8080
