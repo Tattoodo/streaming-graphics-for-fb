@@ -1,36 +1,23 @@
 // resizeViewPort(1024, 576);
 
 if (localStorage.color) {
+    setBackground(localStorage.color)
+}
+
+function setBackground(color) {
+    localStorage.color = color;
     var e = document.createElement(`style`)
     e.innerHTML = `        
-            html,body {
-                background: #aaa;
-            }        
-        `
+        html,body {
+            background: ${color};
+        }        
+    `
     document.head.appendChild(e);
 }
-window.addEventListener("keydown", (event) => {
-    if (event.keyCode == 68) {
-        localStorage.color = (localStorage.color) ? "" : "1";
-        var e = document.createElement(`style`)
-        e.innerHTML = `        
-            html,body {
-                background: #aaa;
-            }        
-        `
-        document.head.appendChild(e);
-    }
-});
 
 window.addEventListener("message", function receiveMessage(event) {
     if (event.data && event.data.type === "bgcolor") {
-        var e = document.createElement(`style`)
-        e.innerHTML = `        
-            html,body {
-                background: ${event.data.color};
-            }        
-        `
-        document.head.appendChild(e);
+        setBackground(event.data.color)
     }
 }, false);
 
