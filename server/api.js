@@ -48,4 +48,12 @@ app.get('/percentages', (req, res) => {
     });
 })
 
+app.get('/start/:objectId', (req, res) => {
+
+})
+
+app.get('/stop', (req, res) => {
+
+})
+
 module.exports = app

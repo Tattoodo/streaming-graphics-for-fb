@@ -12,32 +12,23 @@ angular.module('app').component('upNext', {
     <div flex="initial">
      <md-input-container>
         <label>Object ID</label>
-        <input ng-model="upNext" size=45 ng-init="upNext = $ctrl.upNext">        
+        <input ng-model="$ctrl.objectId" size=45>        
       </md-input-container>                  
     </div>
     <div  flex="initial">
         <p>
-            <md-button ng-click="$ctrl.upNext = upNext">Apply</md-button>
+            <md-button ng-click="$ctrl.start($ctrl.objectId)">Start</md-button>
+            <md-button ng-click="$ctrl.stop()">Stop</md-button>
     </div>
 </div>`,
-        controller: function (Storage) {
-            Object.defineProperty(this, 'upNext', {
-                get: function () {
-                    return localStorage.upNext;
-                },
-                set: function (value) {
-                    localStorage.upNext = value;
-                    if (Storage.sceneRef) {
-                        Storage.sceneRef.postMessage({
-                            type: "upNext",
-                            text: this.upNext,
-                        }, location + 'scene1.html');
-                    }
-                    else {
-                        console.info("scene not open?");
-                    }
-                }
-            })
+        controller: function ($http) {
+            this.stop = function () {
+                $http.get(`/api/stop/`)
+            }
+
+            this.start = function (objectId) {
+                $http.get(`/api/start/` + objectId)
+            }
         }
     }
 );
