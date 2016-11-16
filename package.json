@@ -11,14 +11,15 @@
   },
   "devDependencies": {},
   "scripts": {
+    "postinstall": "bower install",
     "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/johncoffee/ngj16-streaming-graphics.git"
   },
-  "author": "",
-  "license": "public domain",
+  "author": "streaming2016@ragelse.dk",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/johncoffee/ngj16-streaming-graphics/issues"
   },
