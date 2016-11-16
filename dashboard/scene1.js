@@ -20,6 +20,7 @@ angular.module('app').component('cell', {
     bindings: {
         number: "<",
         reaction: "@",
+        pulsate: "<",
     },
     controller: function ($element) {
         // let el = null;
@@ -62,8 +63,11 @@ angular.module('app').component('cell', {
     },
     template: `
 <div layout="row" layout-align="center end" layout-fill>
-    <div class="cell__number">
-        <div class="reaction reaction--{{::$ctrl.reaction}}"></div> 
+    <div class="cell__number" 
+         ng-class="{'animation-pulsate': $ctrl.pulsate}">
+        <div class="reaction ">
+            <div class="reaction__sprite reaction__sprite--{{::$ctrl.reaction}}"></div>
+        </div>         
         <animated-text 
               count-to="{{$ctrl.number}}"                            
               value="{{$ctrl.prevValue}}"
@@ -79,7 +83,7 @@ angular.module('app').component('percentages', {
         template: `
                 
     <div layout="row" style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.wow" reaction="wow" class="cell"></cell>
+        <cell layout="column" flex="50" number="$ctrl.wow" reaction="wow" class="cell" pulsate="true"></cell>
         <cell layout="column" flex="50" number="$ctrl.angry" reaction="angry" class="cell"></cell>
     </div>        
     <div layout="row"  style="height: 50%;">

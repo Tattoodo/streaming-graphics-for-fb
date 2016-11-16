@@ -1,5 +1,5 @@
 html, body {
-    background-color: #0f0;
+    background-color: #888;
 }
 body {
     margin: 0;
@@ -44,7 +44,7 @@ body {
 .cell__number {
     /*text-shadow: 2px 3px 2px rgba(0,0,0,0.45);*/
 
-    font-size: 3.3rem;
+    font-size: 3.1rem;
     margin-bottom: 1rem;
 
     font-family: arial black, sans-serif;
@@ -52,22 +52,26 @@ body {
 
 .reaction {
     display: inline-block;
-    background: transparent url("images/new_facebook_reactions_by_stayka007-d9t4y30.png") no-repeat;
-    height: 50px;
-    width: 50px;
-    background-size: 310px;
 }
 
-.reaction--like {
-    background-position: 4px -7px;
+.reaction__sprite {
+    display: block;
+    background: transparent url("images/new_facebook_reactions_by_stayka007-d9t4y30.png") no-repeat 0 0;
+    height: 62px;
+    width: 62px;
+    background-size: 455px;
+    background-position-y: -21px;
 }
 
-.reaction--love {
-    background-position: -45px -6px;
+.reaction__sprite--like {
+    background-position-x: 0;
 }
-.reaction--angry {
-    background-position: -265px -6px;
+.reaction__sprite--love {
+    background-position-x: -79px;
 }
-.reaction--wow {
-    background-position: -155px -9px;
+.reaction__sprite--angry {
+    background-position-x: -236px;
+}
+.reaction__sprite--wow {
+    background-position-x: -157px;
 }
