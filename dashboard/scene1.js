@@ -18,7 +18,8 @@ angular
 
 angular.module('app').component('cell', {
     bindings: {
-        number: "<"
+        number: "<",
+        reaction: "@",
     },
     controller: function ($element) {
         // let el = null;
@@ -62,7 +63,7 @@ angular.module('app').component('cell', {
     template: `
 <div layout="row" layout-align="center end" layout-fill>
     <div class="cell__number">
-        <div class="reaction reaction--like"></div> 
+        <div class="reaction reaction--{{::$ctrl.reaction}}"></div> 
         <animated-text 
               count-to="{{$ctrl.number}}"                            
               value="{{$ctrl.prevValue}}"
@@ -78,12 +79,12 @@ angular.module('app').component('percentages', {
         template: `
                 
     <div layout="row" style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.wow" class="cell"></cell>
-        <cell layout="column" flex="50" number="$ctrl.angry" class="cell"></cell>
+        <cell layout="column" flex="50" number="$ctrl.wow" reaction="wow" class="cell"></cell>
+        <cell layout="column" flex="50" number="$ctrl.angry" reaction="angry" class="cell"></cell>
     </div>        
     <div layout="row"  style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.love" class="cell"></cell>
-        <cell layout="column" flex="50" number="$ctrl.like" class="cell"></cell>
+        <cell layout="column" flex="50" number="$ctrl.love" reaction="love" class="cell"></cell>
+        <cell layout="column" flex="50" number="$ctrl.like" reaction="like" class="cell"></cell>
     </div>
 
 `,

@@ -61,3 +61,13 @@ body {
 .reaction--like {
     background-position: 4px -7px;
 }
+
+.reaction--love {
+    background-position: -45px -6px;
+}
+.reaction--angry {
+    background-position: -265px -6px;
+}
+.reaction--wow {
+    background-position: -155px -9px;
+}
