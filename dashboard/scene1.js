@@ -115,8 +115,7 @@ angular.module('app').component('percentages', {
     </div>
 
 `,
-        controller: function ($http) {
-
+        controller: function ($scope) {
             this.isBiggest = function (name) {
               return false // JH disabled for now
 
@@ -125,20 +124,17 @@ angular.module('app').component('percentages', {
                 }) === name;
             }
 
-            this.$onInit = function () {
-                this.getVotes()
-                setInterval(this.getVotes, 2000)
-            }
-
-            this.getVotes = () => {
-                $http.get("/api/percentages").then((result) => {
-                    let data = result.data.data
-                    this.angry = data.ANGRY;
-                    this.wow = data.WOW;
-                    this.love = data.LOVE;
-                    this.like = data.LIKE;
+          window.addEventListener("message", (event) => {
+            if (event.data && event.data.type === "percentages") {
+                $scope.$apply(() => {
+                    // console.log(`works~!!`, event.data.percentages)
+                  let percentages = event.data.percentages
+                  for (let key in percentages) if (percentages.hasOwnProperty(key)) {
+                    this[key.toLowerCase()] = percentages[key]
+                  }
                 })
             }
+          }, false);
         }
     }
 );

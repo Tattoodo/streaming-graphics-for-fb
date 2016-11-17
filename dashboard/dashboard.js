@@ -12,23 +12,37 @@ angular.module('app').component('upNext', {
     <div flex="initial">
      <md-input-container>
         <label>Object ID</label>
-        <input ng-model="$ctrl.objectId" size=45>        
+        <input ng-model="objectId" ng-init="objectId = $ctrl.objectId" ng-change="$ctrl.objectId = objectId" size=45>        
       </md-input-container>                  
     </div>
     <div  flex="initial">
         <p>
-            <md-button ng-click="$ctrl.start($ctrl.objectId)">Start</md-button>
-            <md-button ng-click="$ctrl.stop()">Stop</md-button>
+            <md-button ng-click="$ctrl.run(objectId)" ng-disabled="$ctrl.loading">Run</md-button>
     </div>
 </div>`,
-        controller: function ($http) {
-            this.stop = function () {
-                $http.get(`/api/stop/`)
+        controller: function ($http, Storage) {
+            let loading = 0
+
+            this.run = function (objectId) {
+                loading++
+                $http.get(`/api/start/${objectId}?access_token=${Storage.accessToken}`).finally(() => {
+                    loading--
+
+                    Storage.sceneRef.postMessage({
+                      type: "percentages",
+                      percentages: {LIKE: 25, LOVE: 25.1, WOW: 25.52}
+                    }, location + 'scene1.html');
+                })
             }
 
-            this.start = function (objectId) {
-                $http.get(`/api/start/` + objectId)
-            }
+            Object.defineProperty(this, `loading`, {
+              get: () => loading > 0
+            })
+
+            Object.defineProperty(this, `objectId`, {
+              get: () => localStorage.objectId,
+              set: (value) => localStorage.objectId = value
+            })
         }
     }
 );
@@ -124,14 +138,13 @@ angular.module('app').component('openScene', {
     }
 );
 
+
 // Storage
-angular.module('app').service('Storage', function () {
-
-        function Storage() {
-            this.sceneRef = null;
-        }
-
-
-        return Storage;
-    }
-);
+angular.module('app').service('Storage', Storage);
+function Storage() {
+  this.sceneRef = null;
+}
+Object.defineProperty(Storage.prototype, `accessToken`, {
+  get: () => localStorage.access_token,
+  set: (value) => localStorage.access_token = value
+})
