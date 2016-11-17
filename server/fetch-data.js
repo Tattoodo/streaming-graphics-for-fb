@@ -30,7 +30,9 @@ class ReactionsSerialized {
 }
 
 function saveReactions (data, filename) {
-  if (!(data instanceof ReactionsSerialized)) throw "wrong file contents";
+  if (!(data instanceof ReactionsSerialized)) {
+    throw new Error(`wrong file contents`)
+  }
   return new Promise((resolve, reject) => {
     fs.writeFile(filename, JSON.stringify(data, null, '\t'), function (err) {
       if (err) {
@@ -49,27 +51,31 @@ class Reactions {
     this.percentages = {}
 
     types.forEach((reaction) => {
-      this.reactionCount[reaction] = 0
-      this.percentages[reaction] = 0
+      this.reactionCount[ reaction ] = 0
+      this.percentages[ reaction ] = 0
     })
   }
 
-  toJSON() {
+  toJSON () {
     this.percentages = Reactions.calcPercentages(this.reactionCount)
     return this
   }
 
-  static calcPercentages(reactions) {
+  static calcPercentages (reactions) {
     let percentages = {}
 
     let total = 0
-    for (let key in reactions) if (reactions.hasOwnProperty(key)) {
-        total += reactions[key]
+    for (let key in reactions) {
+      if (reactions.hasOwnProperty(key)) {
+        total += reactions[ key ]
+      }
     }
-    for (let key in reactions) if (reactions.hasOwnProperty(key)) {
-      let float = reactions[key] / total;
-      let rounded = Math.round( float * 1000 ) / 10
-      percentages[key] = rounded
+    for (let key in reactions) {
+      if (reactions.hasOwnProperty(key)) {
+        let float = reactions[ key ] / total
+        let rounded = Math.round(float * 1000) / 10
+        percentages[ key ] = rounded
+      }
     }
 
     return percentages
@@ -89,7 +95,7 @@ function getReactions (path, reactionsOfInterest) {
 
         saved.data.forEach((item) => {
           // count up types of interest
-          if (reactionCount[item.type] !== undefined) {
+          if (reactionCount[ item.type ] !== undefined) {
             reactionCount[ item.type ] += 1
             model.total += 1
           }
@@ -102,7 +108,7 @@ function getReactions (path, reactionsOfInterest) {
 }
 
 function loadNext (url, inputPages, maxLength) {
-  let pages = inputPages || {data: [], cursors: null}
+  let pages = inputPages || { data: [], cursors: null }
 
   return new Promise((resolve, reject) => {
     loadReactions(url).then((response) => {
