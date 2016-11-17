@@ -1,13 +1,18 @@
+@font-face {
+    font-family: 'gotham_boldregular';
+    src: url('fonts/gothambold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html, body {
     background-color: #0f0;
+    font: normal 16px/150% 'gotham_boldregular', "Comic Sans MS", fantasy;
 }
 body {
     margin: 0;
 }
 
-.cell__number {
-    color: #f8fdff;
-}
 
 .red-fade {
     animation: animationFrames ease-in .3s;
@@ -42,12 +47,10 @@ body {
 }
 
 .cell__number {
-    /*text-shadow: 2px 3px 2px rgba(0,0,0,0.45);*/
+    color: #fff;
 
     font-size: 3.1rem;
-    margin-bottom: 1rem;
-
-    font-family: arial black, sans-serif;
+    margin-bottom: 2rem;
 }
 
 .reaction {
