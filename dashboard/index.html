@@ -31,5 +31,33 @@
 <script src="bower_components/angular-aria/angular-aria.min.js"></script>
 <script src="bower_components/angular-count-to/build/angular-count-to.min.js"></script>
 <script src="dashboard.js"></script>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1617513098543757',
+      xfbml      : false,
+      version    : 'v2.8'
+    });
+
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        let accessToken = response.authResponse.accessToken
+        console.info(accessToken)
+        localStorage.access_token = accessToken
+      }
+      else {
+        FB.login();
+      }
+    });
+  };
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
 </body>
 </html>

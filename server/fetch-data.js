@@ -1,19 +1,18 @@
 const fs = require(`fs`)
-
-const config = require('./our-config.json')
-const initFacebook = require(`./init-facebook`)
-
-let FB = initFacebook()
+const { Facebook } = require(`fb`)
 
 function loadReactions (url) {
+  let fb = new Facebook({ version: 'v2.8' })
+
   return new Promise((resolve, reject) => {
-    FB.api(
+    fb.api(
       url,
       'GET',
       {},
       function (response) {
-        // Insert your code here
-        if (response.error) reject(response.error)
+        if (response.error) {
+          reject(response.error)
+        }
         else {
           resolve(response)
         }
