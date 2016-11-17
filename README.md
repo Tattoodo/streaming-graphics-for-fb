@@ -19,3 +19,7 @@ then, in a new terminal, start chrome in app mode with this command (for Mac OS)
 on windows, start chrome this way
 
     chrome.exe --app=http://localhost:8080
+
+## Stuff
+
+The project attempts to comply with the standardjs coding style, http://standardjs.com/.
