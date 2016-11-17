@@ -67,7 +67,9 @@ class Reactions {
         total += reactions[key]
     }
     for (let key in reactions) if (reactions.hasOwnProperty(key)) {
-      percentages[key] = reactions[key] / total;
+      let float = reactions[key] / total;
+      let rounded = Math.round( float * 1000 ) / 10
+      percentages[key] = rounded
     }
 
     return percentages
