@@ -84,7 +84,7 @@ app.get('/percentages', (req, res) => {
 })
 
 app.get('/start/:objectId', (req, res) => {
-  let url = `/${req.params.objectId}/reactions?fields=type&summary=total_count&limit=5000`
+  let url = `/${req.params.objectId}/reactions?fields=type&limit=5000&access_token=${req.query.access_token}`
 
   let cacheFile = path.join(__dirname, '/download/', md5(req.params.objectId) + '.json')
 
