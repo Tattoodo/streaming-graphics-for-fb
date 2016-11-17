@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "watch": [
+    "server/*"
+  ],
+  "ignore": [
+    "server/download/*"
+  ]
+}
