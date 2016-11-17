@@ -11,8 +11,8 @@ angular.module('app').component('upNext', {
         template: `<div layout="row">
     <div flex="initial">
      <md-input-container>
-        <label>Object ID</label>
-        <input ng-model="objectId" ng-init="objectId = $ctrl.objectId" ng-change="$ctrl.objectId = objectId" size=45>        
+        <label>Permalink (URL)</label>
+        <input ng-model="objectId" ng-init="objectId = $ctrl.objectId" ng-change="$ctrl.objectId = objectId" size="90" type="url">        
       </md-input-container>                  
     </div>
     <div  flex="initial">
@@ -24,6 +24,11 @@ angular.module('app').component('upNext', {
             let loading = 0
 
             this.run = function (objectId) {
+
+                if ((objectId+"").indexOf(`http`) > -1) {
+                  objectId = this.extractObjectId(objectId)
+                }
+                console.assert(!!objectId, "Object should be number");
                 loading++
                 $http.get(`/api/start/${objectId}?access_token=${Storage.accessToken}`).finally(() => {
                     loading--
@@ -33,6 +38,18 @@ angular.module('app').component('upNext', {
                       percentages: {LIKE: 25, LOVE: 25.1, WOW: 25.52}
                     }, location + 'scene1.html');
                 })
+            }
+
+            this.extractObjectId = function(permalink) {
+              let objectId = null;
+
+              let matches = permalink.match(/\/(\d+)/g)
+              if (matches instanceof Array) {
+                  objectId = matches.join(`_`).replace(/\//g,``)
+              }
+              console.log(`extracted ${objectId}`)
+
+              return objectId
             }
 
             Object.defineProperty(this, `loading`, {
@@ -47,37 +64,7 @@ angular.module('app').component('upNext', {
     }
 );
 
-angular.module('app').component('attention', {
-        template: `<div layout="row">
-    <div flex="30">
-        Attention   
-    </div>
-    <div flex="70">
-        <input ng-model="attention" ng-init="attention = $ctrl.attention" size="45">
-        <button class="md-button md-raised" ng-click="$ctrl.attention = attention">Apply</button>
-    </div>
-</div>`,
-        controller: function (Storage) {
-            Object.defineProperty(this, 'attention', {
-                get: function () {
-                    return localStorage.attention;
-                },
-                set: function (value) {
-                    localStorage.attention = value;
-                    if (Storage.sceneRef) {
-                        Storage.sceneRef.postMessage({
-                            type: "attention",
-                            text: this.attention
-                        }, location + 'scene1.html');
-                    }
-                    else {
-                        console.info("scene not open?");
-                    }
-                }
-            })
-        }
-    }
-);
+
 
 angular.module('app').component('deadline', {
         template: `
