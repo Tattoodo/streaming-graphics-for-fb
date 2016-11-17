@@ -70,7 +70,7 @@ app.get('/start/:objectId', (req, res) => {
 
     let url = `/${req.params.objectId}/reactions?fields=type&summary=total_count&limit=1`;
 
-    let cacheFile = path.normalize(path.join(__dirname,  '/download/', md5(req.params.objectId), '.json'))
+  let cacheFile = path.join(__dirname, '/download/', md5(req.params.objectId), '.json')
 
     loadNext(url).then((result) => {
 
