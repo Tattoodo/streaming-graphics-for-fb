@@ -1,12 +1,13 @@
-const express = require('express');
+const express = require('express')
 const api = require(`./api`)
+const path = require(`path`)
 
-var app = express();
+var app = express()
 
-app.use(`/api/`, api);
+app.use(`/api/`, api)
 
-app.use(`/`, express.static(`../dashboard`));
+app.use(`/`, express.static(path.normalize(path.join(__dirname, `/../dashboard`))))
 
 app.listen(8080, function () {
-    console.log('Listening on port 8080');
-});
+  console.log('Listening on port 8080')
+})
