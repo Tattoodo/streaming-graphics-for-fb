@@ -107,7 +107,7 @@ function getReactions (path, reactionsOfInterest) {
   })
 }
 
-function loadNext (url, inputPages, maxLength) {
+function loadNext (url, inputPages) {
   let pages = inputPages || { data: [], cursors: null }
 
   return new Promise((resolve, reject) => {
@@ -120,7 +120,7 @@ function loadNext (url, inputPages, maxLength) {
 
       if (response.paging && response.paging.next) {
         console.log(`loading next page...`)
-        loadNext(response.paging.next.replace(`https://graph.facebook.com/${config.version}`, ``), pages, maxLength).then((morePages) => {
+        loadNext(response.paging.next.replace(`https://graph.facebook.com/${config.version}`, ``), pages).then((morePages) => {
           resolve(morePages)
         }, reject)
       } else {
