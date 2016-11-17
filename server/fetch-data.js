@@ -22,7 +22,15 @@ function loadReactions (url) {
   })
 }
 
+class ReactionsSerialized {
+  constructor () {
+    this.data = []
+    this.cursors = {}
+  }
+}
+
 function saveReactions (data, filename) {
+  if (!(data instanceof ReactionsSerialized)) throw "wrong file contents";
   return new Promise((resolve, reject) => {
     fs.writeFile(filename, JSON.stringify(data, null, '\t'), function (err) {
       if (err) {
@@ -34,29 +42,54 @@ function saveReactions (data, filename) {
   })
 }
 
-function getReactions (path) {
+class Reactions {
+  constructor (types) {
+    this.total = 0
+    this.reactionCount = {}
+    this.percentages = {}
+
+    types.forEach((reaction) => {
+      this.reactionCount[reaction] = 0
+      this.percentages[reaction] = 0
+    })
+  }
+
+  toJSON() {
+    this.percentages = Reactions.calcPercentages(this.reactionCount)
+    return this
+  }
+
+  static calcPercentages(reactions) {
+    let percentages = {}
+
+    let total = 0
+    for (let key in reactions) if (reactions.hasOwnProperty(key)) {
+        total += reactions[key]
+    }
+    for (let key in reactions) if (reactions.hasOwnProperty(key)) {
+      percentages[key] = reactions[key] / total;
+    }
+
+    return percentages
+  }
+}
+
+function getReactions (path, reactionsOfInterest) {
+  let model = new Reactions(reactionsOfInterest)
+
   return new Promise((resolve, reject) => {
-    fs.readFile(path, (err, contents) => {
+    fs.readFile(path, (err, rawText) => {
       if (err) {
         reject()
       } else {
-        let list = JSON.parse(contents)
-
-        let model = {
-          types: {},
-          reactionCount: {}
-        }
+        let saved = JSON.parse(rawText)
         let reactionCount = model.reactionCount
 
-        list.forEach((item) => {
-          if (!model[ item.type ]) {
-            model.types[ item.type ] = item.type
-          }
-
-          if (!reactionCount[ item.type ]) {
-            reactionCount[ item.type ] = 1
-          } else {
+        saved.data.forEach((item) => {
+          // count up types of interest
+          if (reactionCount[item.type] !== undefined) {
             reactionCount[ item.type ] += 1
+            model.total += 1
           }
         })
 
@@ -66,19 +99,20 @@ function getReactions (path) {
   })
 }
 
-function loadNext (url, inputPages) {
-  let pages = inputPages || []
+function loadNext (url, inputPages, maxLength) {
+  let pages = inputPages || {data: [], cursors: null}
 
   return new Promise((resolve, reject) => {
     loadReactions(url).then((response) => {
+      pages.cursors = (response.paging) ? response.paging.cursors : null
+
       if (response.data instanceof Array) {
-        pages = pages.concat(response.data)
-      } else {
-        console.log(`no data???`)
+        pages.data = pages.data.concat(response.data)
       }
+
       if (response.paging && response.paging.next) {
         console.log(`loading next page...`)
-        loadNext(response.paging.next.replace(`https://graph.facebook.com/${config.version}`, ``), pages).then((morePages) => {
+        loadNext(response.paging.next.replace(`https://graph.facebook.com/${config.version}`, ``), pages, maxLength).then((morePages) => {
           resolve(morePages)
         }, reject)
       } else {
@@ -92,6 +126,7 @@ function loadNext (url, inputPages) {
 module.exports = {
   loadNext: loadNext,
   saveReactions: saveReactions,
-  getReactions: getReactions
+  getReactions: getReactions,
+  ReactionsSerialized: ReactionsSerialized
 }
 
