@@ -1,3 +1,4 @@
+const path = require(`path`)
 const md5 = require('md5')
 const express = require('express');
 const {loadNext, saveReactions, getReactions} = require('./fetch-data')
@@ -30,7 +31,7 @@ function mockUpdate() {
 
 app.get(`/reactions/:objectId`, (req, res) => {
     if (req.params.objectId) {
-        let cacheFile = './download/' + md5(req.params.objectId) + '.json';
+        let cacheFile = path.normalize(path.join(__dirname, '/download/', md5(req.params.objectId), '.json'))
 
         getReactions(cacheFile).then((result) => {
                 res.json(result)
@@ -69,7 +70,7 @@ app.get('/start/:objectId', (req, res) => {
 
     let url = `/${req.params.objectId}/reactions?fields=type&summary=total_count&limit=1`;
 
-    let cacheFile = './download/' + md5(req.params.objectId) + '.json';
+    let cacheFile = path.normalize(path.join(__dirname,  '/download/', md5(req.params.objectId), '.json'))
 
     loadNext(url).then((result) => {
 
