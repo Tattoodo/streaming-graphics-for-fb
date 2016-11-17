@@ -1,5 +1,6 @@
+const md5 = require('md5')
 const express = require('express');
-const {getReactions} = require('./fetch-data')
+const {loadNext, saveReactions, getReactions} = require('./fetch-data')
 
 var app = express();
 
@@ -27,6 +28,22 @@ function mockUpdate() {
     setTimeout(mockUpdate, 300)
 }
 
+app.get(`/reactions/:objectId`, (req, res) => {
+    if (req.params.objectId) {
+        let cacheFile = './download/' + md5(req.params.objectId) + '.json';
+
+        getReactions(cacheFile).then((result) => {
+                res.json(result)
+            },
+            (reason) => {
+                res.status(500).json({error: reason})
+            })
+    }
+    else {
+        res.sendStatus(400)
+    }
+})
+
 app.get('/percentages', (req, res) => {
     let totalCount = count(counts);
     let data = {}
@@ -50,10 +67,37 @@ app.get('/percentages', (req, res) => {
 
 app.get('/start/:objectId', (req, res) => {
 
+    let url = `/${req.params.objectId}/reactions?fields=type&summary=total_count&limit=1`;
+
+    let cacheFile = './download/' + md5(req.params.objectId) + '.json';
+
+    loadNext(url).then((result) => {
+
+        console.log('--- results: ' + result.length)
+        if (result.length < 10) {
+            console.log(result)
+            console.log('---')
+        }
+
+        return saveReactions(result, cacheFile);
+
+    }, (reason) => {
+        console.log(reason)
+        res.sendStatus(500)
+    })
+    .then(function () {
+        res.sendStatus(200)
+    },(reason) => {
+        console.log(reason)
+        res.sendStatus(500)
+    })
+
 })
 
 app.get('/stop', (req, res) => {
 
 })
+
+
 
 module.exports = app

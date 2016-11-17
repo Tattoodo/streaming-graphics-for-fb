@@ -1,17 +1,16 @@
-const config = require('./our-config.json')
 const fs = require(`fs`)
-const moment = require('moment')
 const path = require(`path`)
+
+const config = require('./our-config.json')
 const initFacebook = require(`./init-facebook`)
 
 let FB = initFacebook();
 
-let filenameOut = `./download/reactions_result.json`;
 
-function loadReactions() {
+function loadReactions(url) {
     return new Promise((resolve, reject) => {
         FB.api(
-            `/${config.objectId}/reactions?fields=type&summary=total_count&limit=999`,
+            url,
             'GET',
             {},
             function(response) {
@@ -25,53 +24,88 @@ function loadReactions() {
     })
 }
 
-function saveReactions(filenameOut) {
+function saveReactions(data, filename) {
     return new Promise((resolve, reject)=> {
-        loadReactions().then((data)=> {
-            fs.writeFile(filenameOut, JSON.stringify(data, null, '\t'), function (err) {
-                if (err) {
-                    reject(err)
-                }
-                else {
-                    resolve()
-                }
-            });
-        }, reject)
+        fs.writeFile(filename, JSON.stringify(data, null, '\t'), function (err) {
+            if (err) {
+                reject(err)
+            }
+            else {
+                resolve()
+            }
+        });
+
     })
 }
 
-function getReactions() {
-    let json = fs.readFileSync(`download/reactions_result.json`);
-    json = JSON.parse(json);
+function getReactions(path) {
+    return new Promise((resolve, reject)=>{
+        fs.readFile(path, (err, contents)=>{
+            if (err) {
+                reject()
+            }
+            else  {
+                let list = JSON.parse(contents);
 
-    let result = {
-        types: {},
-        reactionCount: {}
-    };
+                let model = {
+                    types: {},
+                    reactionCount: {}
+                };
+                let reactionCount = model.reactionCount
 
-    let reactionCount = result.reactionCount
+                list.forEach((item) => {
+                    if (!model[item.type]) {
+                        model.types[item.type] = item.type
+                    }
 
-    json.data.forEach((item) => {
-        if (!result[item.type]) {
-            result.types[item.type] = item.type
-        }
+                    if (!reactionCount[item.type]) {
+                        reactionCount[item.type] = 1;
+                    }
+                    else {
+                        reactionCount[item.type] += 1
+                    }
+                })
 
-        if (!reactionCount[item.type]) {
-            reactionCount[item.type] = 1;
-        }
-        else {
-            reactionCount[item.type] += 1
-        }
+                resolve(model)
+            }
+
+        });
+
     })
-
-    return result
 }
 
-// saveReactions(filenameOut).then(console.log, console.log)
-// console.log(getReactions())
+
+function loadNext(url, inputPages) {
+    let pages = inputPages || [];
+
+    return new Promise((resolve, reject) => {
+
+        loadReactions(url).then((response) => {
+            if (response.data instanceof Array) {
+                pages = pages.concat(response.data)
+            }
+            else {
+                console.log("no data???");
+            }
+            if (response.paging && response.paging.next) {
+                console.log("loading next page...")
+                loadNext(response.paging.next.replace(`https://graph.facebook.com/${config.version}`,``), pages).then((morePages)=>{
+                    resolve(morePages);
+                }, reject);
+            }
+            else {
+                console.log("no next page.")
+                resolve(pages)
+            }
+
+        }, reject);
+
+    });
+}
 
 module.exports = {
-    getReactions: getReactions,
+    loadNext: loadNext,
     saveReactions: saveReactions,
+    getReactions: getReactions,
 }
 
