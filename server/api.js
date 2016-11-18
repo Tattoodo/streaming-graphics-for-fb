@@ -1,6 +1,7 @@
 const path = require(`path`)
 const md5 = require('md5')
 const express = require('express')
+const fs = require(`fs`)
 const { loadNext, saveReactions, getReactions, ReactionsSerialized, Reactions } = require('./fetch-data')
 
 var app = express()
@@ -72,29 +73,36 @@ app.get('/start/:objectId/:since', (req, res) => {
 
   let cacheFile = path.join(__dirname, '/download/', md5(lastObjectId) + '.json')
 
-  loadNext(url).then((result) => {
-    console.log('--- results: ' + result.data.length)
-    if (result.data.length < 10) {
-      console.log(result)
-      console.log('---')
+  fs.unlink(cacheFile, (err) => {
+    if (err) {
+      console.log(err)
     }
 
-    let dbFormat = new ReactionsSerialized()
-    dbFormat.data = result.data
-    dbFormat.cursors = result.cursors
-    return saveReactions(dbFormat, cacheFile)
-  }, (reason) => {
-    console.log(reason)
-    res.sendStatus(500)
-  })
+    loadNext(url).then((result) => {
+      console.log('--- results: ' + result.data.length)
+      if (result.data.length < 10) {
+        console.log(result)
+        console.log('---')
+      }
+
+      let dbFormat = new ReactionsSerialized()
+      dbFormat.data = result.data
+      dbFormat.cursors = result.cursors
+      return saveReactions(dbFormat, cacheFile)
+    }, (reason) => {
+      console.log(reason)
+      res.sendStatus(500)
+    })
     .then(function () {
       lastObjectId = objectId
-      console.log('ready to serve '+lastObjectId + ' saved ' +cacheFile)
+      console.log('ready to serve ' + lastObjectId + ' saved ' + cacheFile)
       res.sendStatus(200)
     }, (reason) => {
       console.log(reason)
       res.sendStatus(500)
     })
+  })
+
 })
 
 app.get('/stop', (req, res) => {
