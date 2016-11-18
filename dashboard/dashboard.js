@@ -17,8 +17,8 @@ angular.module('app').component('reactionsObjectId', {
     </div>
     <div  flex="initial">
         <p>
-            <md-button ng-click="$ctrl.start(); $ctrl.run(objectId); $ctrl.running=true" ng-show="!$ctrl.running" ng-disabled="$ctrl.loading">Start</md-button>
-            <md-button ng-click="$ctrl.stop(); $ctrl.running=false" ng-show="$ctrl.running" ng-disabled="$ctrl.loading">Stop</md-button>
+            <md-button ng-click="$ctrl.start(); $ctrl.run(objectId); $ctrl.running=true" ng-show="!$ctrl.running" ng-disabled="$ctrl.loading || !$ctrl.isOpen()">start</md-button>
+            <md-button ng-click="$ctrl.stop(); $ctrl.running=false" ng-show="$ctrl.running" ng-disabled="$ctrl.loading" ng-bind="($ctrl.loading) ? 'loading...' : 'stop'"></md-button>
     </div>
 </div>`,
         controller: function ($http, $timeout, Storage) {
@@ -27,6 +27,10 @@ angular.module('app').component('reactionsObjectId', {
             this.running = false
 
             let delay = 10000 // scraping interval
+
+            this.isOpen = function () {
+              return !!window.scene1
+            }
 
             this.start = function () {
               localStorage.started = new Date().toISOString()
@@ -150,6 +154,7 @@ angular.module('app').component('openScene', {
                     <span ng-bind="$ctrl.isConnected() ? 'Connected' : 'Disconnected'"></span>`,
         controller: function (Storage, $window, $scope) {
             this.open = function () {
+              window.scene1 = true
                 Storage.sceneRef = $window.open('scene1.html', '_blank',
                     'width=1024,height=576,location=no,status=no,menubar=no'); // note the window dimensions of the scene is modified by the scene itself
             };
