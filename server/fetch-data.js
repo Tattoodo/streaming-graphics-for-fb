@@ -131,6 +131,7 @@ function loadNext (url, inputPages) {
 }
 
 module.exports = {
+  Reactions: Reactions,
   loadNext: loadNext,
   saveReactions: saveReactions,
   getReactions: getReactions,

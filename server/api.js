@@ -1,7 +1,7 @@
 const path = require(`path`)
 const md5 = require('md5')
 const express = require('express')
-const { loadNext, saveReactions, getReactions, ReactionsSerialized } = require('./fetch-data')
+const { loadNext, saveReactions, getReactions, ReactionsSerialized, Reactions } = require('./fetch-data')
 
 var app = express()
 
@@ -41,6 +41,13 @@ app.get(`/reactions/:objectId`, (req, res) => {
 })
 
 app.get('/percentages', (req, res) => {
+  if (lastObjectId == 0) {
+    let model = new Reactions(types)
+    res.json(model)
+    return
+  }
+
+
   let cacheFile = path.join(__dirname, '/download/', md5(lastObjectId) + '.json')
 
   getReactions(cacheFile, types).then(
