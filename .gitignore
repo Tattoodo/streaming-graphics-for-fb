@@ -35,4 +35,4 @@ node_modules
 .idea
 
 bower_components
-download/*.json
+server/download/*.json
