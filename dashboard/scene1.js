@@ -118,6 +118,8 @@ angular.module('app').component('percentages', {
         controller: function ($scope, $http, $timeout) {
 
             this.isBiggest = function (name) {
+                return false;
+
                 return ['wow', 'angry', 'love', 'like'].reduce((bestKey, currentValue) => {
                     return (!bestKey || this[bestKey] > this[currentValue]) ? bestKey : currentValue;
                 }) === name;
