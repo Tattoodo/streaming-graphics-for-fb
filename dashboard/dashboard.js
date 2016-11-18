@@ -17,7 +17,7 @@ angular.module('app').component('reactionsObjectId', {
     </div>
     <div  flex="initial">
         <p>
-            <md-button ng-click="$ctrl.run(objectId); $ctrl.start(); $ctrl.running=true" ng-show="!$ctrl.running" ng-disabled="$ctrl.loading">Start</md-button>
+            <md-button ng-click="$ctrl.start(); $ctrl.run(objectId); $ctrl.running=true" ng-show="!$ctrl.running" ng-disabled="$ctrl.loading">Start</md-button>
             <md-button ng-click="$ctrl.stop(); $ctrl.running=false" ng-show="$ctrl.running" ng-disabled="$ctrl.loading">Stop</md-button>
     </div>
 </div>`,
@@ -29,9 +29,13 @@ angular.module('app').component('reactionsObjectId', {
             let delay = 10000 // scraping interval
 
             this.start = function () {
-              Storage.sceneRef.postMessage({
-                type: "start",
-              }, location + 'scene1.html');
+              localStorage.started = new Date().toISOString()
+
+              if (Storage.sceneRef) {
+                Storage.sceneRef.postMessage({
+                  type: "start",
+                }, location + 'scene1.html');
+              }
             }
 
             this.run = function (objectId) {
@@ -39,8 +43,10 @@ angular.module('app').component('reactionsObjectId', {
                   objectId = this.extractObjectId(objectId)
                 }
 
+                let since = (localStorage.started) ? localStorage.started : 0;
+
                 loading++
-                $http.get(`/api/start/${objectId}?access_token=${Storage.accessToken}`).then(()=>{
+                $http.get(`/api/start/${objectId}/${since}?access_token=${Storage.accessToken}`).then(()=>{
                   if (this.running) {
                     $timeout( ()=>{
                       this.run(objectId)

@@ -64,9 +64,12 @@ app.get('/percentages', (req, res) => {
       })
 })
 
-app.get('/start/:objectId', (req, res) => {
+app.get('/start/:objectId/:since', (req, res) => {
   let objectId = req.params.objectId
-  let url = `/${objectId}/reactions?fields=type&limit=5000&access_token=${req.query.access_token}`
+  let since = Math.round( new Date((req.params.since) ? req.params.since : 0).getTime() / 1000 )
+  let url = `/${objectId}/reactions?fields=type&limit=5000&since=${since}&access_token=${req.query.access_token}`
+
+  console.log(url)
 
   let cacheFile = path.join(__dirname, '/download/', md5(lastObjectId) + '.json')
 
