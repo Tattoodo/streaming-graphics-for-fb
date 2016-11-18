@@ -11,8 +11,8 @@ angular.module('app').component('reactionsObjectId', {
         template: `<div layout="row">
     <div flex="initial">
      <md-input-container>
-        <label>Permalink (URL)</label>
-        <input ng-model="objectId" ng-init="objectId = $ctrl.objectId" ng-change="$ctrl.objectId = objectId" size="90" type="url">        
+        <label>Permalink or object ID</label>
+        <input ng-model="objectId" ng-init="objectId = $ctrl.objectId" ng-change="$ctrl.objectId = objectId" size="90" type="text">        
       </md-input-container>                  
     </div>
     <div  flex="initial">
