@@ -135,15 +135,34 @@ angular.module('app').component('x-deadline', {
 // open scene button
 angular.module('app').component('openScene', {
         template: `
-                    <button class="md-button" onclick="fblogin()">Facebook login</button>
+                    <button class="md-button md-raised"
+                     ng-class="{'md-primary': $ctrl.loggedin}"
+                     ng-disabled="$ctrl.loggedin"
+                     ng-click="$ctrl.fblogin()" 
+                     ng-bind="$ctrl.loggedin ? 'logged in!' : 'Facebook login' "></button>
                     <button ng-click="$ctrl.open()"                           
                            class="md-button md-raised md-primary">open scene</button>
                     <span ng-bind="$ctrl.isConnected() ? 'Connected' : 'Disconnected'"></span>`,
-        controller: function (Storage, $window) {
+        controller: function (Storage, $window, $scope) {
             this.open = function () {
                 Storage.sceneRef = $window.open('scene1.html', '_blank',
                     'width=1024,height=576,location=no,status=no,menubar=no'); // note the window dimensions of the scene is modified by the scene itself
             };
+
+            this.fblogin = () => {
+              FB.getLoginStatus((response) => {
+                if (response.status === 'connected') {
+                  let accessToken = response.authResponse.accessToken
+                  Storage.accessToken = accessToken
+                  $scope.$apply(() => {
+                    this.loggedin = true
+                  })
+                }
+                else {
+                  FB.login()
+                }
+              })
+            }
 
             this.isConnected = function () {
                 return !!Storage.sceneRef;
