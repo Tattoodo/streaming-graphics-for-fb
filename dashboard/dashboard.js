@@ -26,7 +26,7 @@ angular.module('app').component('reactionsObjectId', {
 
             this.running = false
 
-            let delay = 10000
+            let delay = 10000 // scraping interval
 
             this.start = function () {
               Storage.sceneRef.postMessage({
@@ -48,7 +48,6 @@ angular.module('app').component('reactionsObjectId', {
                   }
                 }, ()=> {
                   this.running = false
-                  console.log("Something went wrong", this.running);
                 }).finally(() => {
                     loading--
                 })

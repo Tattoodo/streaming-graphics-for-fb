@@ -72,9 +72,9 @@ body {
 .reaction__sprite--love {
     background-position-x: -79px;
 }
-.reaction__sprite--angry {
-    background-position-x: -236px;
+.reaction__sprite--haha {
+    background-position-x: -157px;
 }
 .reaction__sprite--wow {
-    background-position-x: -157px;
+    background-position-x: -235px;
 }

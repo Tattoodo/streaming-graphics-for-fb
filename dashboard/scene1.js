@@ -1,3 +1,16 @@
+let Reaction = {
+  NONE: `NONE`,
+  HAHA: `HAHA`,
+  THANKFUL: `THANKFUL`,
+  ANGRY: `ANGRY`,
+  WOW: `WOW`,
+  LIKE: `LIKE`,
+  LOVE: `LOVE`,
+  SAD: `SAD`
+}
+
+let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW ]
+
 // resizeViewPort(1024, 576);
 
 if (localStorage.color) {
@@ -106,23 +119,31 @@ angular.module('app').component('percentages', {
         template: `
                 
     <div layout="row" style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.wow" reaction="wow" class="cell" pulsate="$ctrl.isBiggest('wow')"></cell>
-        <cell layout="column" flex="50" number="$ctrl.angry" reaction="angry" class="cell" pulsate="$ctrl.isBiggest('angry')"></cell>
+        <cell layout="column" flex="50" number="$ctrl.LIKE" reaction="like" class="cell" pulsate="$ctrl.isBiggest('LIKE')"></cell>
+        <cell layout="column" flex="50" number="$ctrl.LOVE" reaction="love" class="cell" pulsate="$ctrl.isBiggest('LOVE')"></cell>
     </div>        
     <div layout="row"  style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.love" reaction="love" class="cell" pulsate="$ctrl.isBiggest('love')"></cell>
-        <cell layout="column" flex="50" number="$ctrl.like" reaction="like" class="cell" pulsate="$ctrl.isBiggest('like')"></cell>
+        <cell layout="column" flex="50" number="$ctrl.HAHA" reaction="haha" class="cell" pulsate="$ctrl.isBiggest('HAHA')"></cell>
+        <cell layout="column" flex="50" number="$ctrl.WOW" reaction="wow" class="cell" pulsate="$ctrl.isBiggest('WOW')"></cell>
     </div>
 
 `,
         controller: function ($scope, $http, $timeout) {
 
             this.isBiggest = function (name) {
-                return false;
-
-                return ['wow', 'angry', 'love', 'like'].reduce((bestKey, currentValue) => {
-                    return (!bestKey || this[bestKey] > this[currentValue]) ? bestKey : currentValue;
-                }) === name;
+              let sum = types.reduce((key, currentValue) => {
+                return ((this[key] !== undefined) ? this[key] : 0) + this[currentValue]
+              }, 0)
+              console.log(sum)
+              if (sum === 0) {
+                return false
+              }
+              else {
+                let biggestValueKey = types.reduce((bestKey, currentValue) => {
+                  return (!bestKey || this[bestKey] > this[currentValue]) ? bestKey : currentValue
+                })
+                return (biggestValueKey === name)
+              }
             }
 
           this.$onInit = function () {
@@ -133,14 +154,13 @@ angular.module('app').component('percentages', {
             $http.get("/api/percentages").then((result) => {
               if (!window.stopped) {
                 let data = result.data.percentages
-                this.angry = data.ANGRY;
-                this.wow = data.WOW;
-                this.love = data.LOVE;
-                this.like = data.LIKE;
+                types.forEach((key)=>{
+                  this[key] = data[key]
+                })
               }
             })
             .finally(()=>{
-              $timeout(this.update, 2000)
+              $timeout(this.update, 1000)
             })
           }
 
