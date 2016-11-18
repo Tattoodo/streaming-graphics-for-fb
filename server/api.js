@@ -1,7 +1,7 @@
 const path = require(`path`)
 const md5 = require('md5')
 const express = require('express')
-const fs = require(`fs`)
+const rimraf = require(`rimraf`)
 const { loadNext, saveReactions, getReactions, ReactionsSerialized, Reactions } = require('./fetch-data')
 
 var app = express()
@@ -102,7 +102,11 @@ app.get('/start/:objectId/:since', (req, res) => {
 })
 
 app.get('/stop', (req, res) => {
-
+  let cacheDirJson = path.join(__dirname, '/download/*.json')
+  rimraf(cacheDirJson, (err) => {
+    console.log(`cleared cache`)
+    res.sendStatus(err ? 500 : 200)
+  });
 })
 
 module.exports = app

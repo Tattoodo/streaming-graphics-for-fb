@@ -64,6 +64,11 @@ angular.module('app').component('reactionsObjectId', {
             }
 
             this.stop = () => {
+              loading++
+              $http.get(`/api/stop`).finally(() => {
+                loading--
+              });
+
               Storage.sceneRef.postMessage({
                 type: "stop",
                 percentages: {LIKE: 25, LOVE: 25.1, WOW: 25.52}
