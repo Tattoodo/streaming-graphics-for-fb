@@ -118,10 +118,14 @@ function loadNext (url, inputPages) {
       }
 
       if (response.paging && response.paging.next) {
-        console.log(`loading next page...`)
-        loadNext(response.paging.next.replace(`https://graph.facebook.com/${config.version}`, ``), pages).then((morePages) => {
-          resolve(morePages)
-        }, reject)
+        // delay requests
+        setTimeout(() => {
+          console.log(`loading next page...`)
+          loadNext(response.paging.next.replace(`https://graph.facebook.com/v2.8`, ``), pages).then((morePages) => {
+            resolve(morePages)
+          }, reject)
+        }, 2000)
+
       } else {
         console.log(`no next page.`)
         resolve(pages)

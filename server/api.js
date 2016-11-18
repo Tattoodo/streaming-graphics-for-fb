@@ -52,7 +52,6 @@ app.get('/percentages', (req, res) => {
 
   getReactions(cacheFile, types).then(
     (result) => {
-      console.log(result)
       res.json(result)
     },
     (reason) => {
@@ -67,7 +66,7 @@ app.get('/percentages', (req, res) => {
 app.get('/start/:objectId/:since', (req, res) => {
   let objectId = req.params.objectId
   let since = Math.round( new Date((req.params.since) ? req.params.since : 0).getTime() / 1000 )
-  let url = `/${objectId}/reactions?fields=type&limit=5000&since=${since}&access_token=${req.query.access_token}`
+  let url = `/${objectId}/reactions?fields=type&limit=500&since=${since}&access_token=${req.query.access_token}`
 
   console.log(url)
 
