@@ -7,21 +7,21 @@
 </head>
 <body ng-app="app">
 
-<div layout="column" flex="100">
+<div layout="column" flex="100" layout-margin="">
 
     <percentages></percentages>
 
-    <h3 class="md-headline">
-        Dashboard <open-scene></open-scene>
+    <h3 class="md-display-1" md-theme="accent">
+        Dashboard
     </h3>
-    <p>If you close the dashboard, the connection to the scene is lost. Only open 1 scene.</p>
 
-    <h4>Settings:</h4>
+    <h3 class="md-headline">
+        <open-scene></open-scene>
+    </h3>
 
-    <up-next></up-next>
+    <h4>Settings</h4>
 
-    <deadline></deadline>
-
+    <reactions-object-id></reactions-object-id>
 </div>
 
 

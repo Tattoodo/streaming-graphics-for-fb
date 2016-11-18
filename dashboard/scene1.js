@@ -1,7 +1,7 @@
 // resizeViewPort(1024, 576);
 
 if (localStorage.color) {
-    setBackground(localStorage.color)
+    // setBackground(localStorage.color)
 }
 
 function setBackground(color) {
@@ -95,7 +95,7 @@ angular.module('app').component('cell', {
               value="{{$ctrl.prevValue}}"
               filter="number"
               filter-param-1="1"             
-              duration="0.333">
+              duration="0.75">
         </animated-text> %
     </div>
 </div>
@@ -115,24 +115,43 @@ angular.module('app').component('percentages', {
     </div>
 
 `,
-        controller: function ($scope) {
-            this.isBiggest = function (name) {
-              return false // JH disabled for now
+        controller: function ($scope, $http, $timeout) {
 
+            this.isBiggest = function (name) {
                 return ['wow', 'angry', 'love', 'like'].reduce((bestKey, currentValue) => {
                     return (!bestKey || this[bestKey] > this[currentValue]) ? bestKey : currentValue;
                 }) === name;
             }
 
+          this.$onInit = function () {
+            this.update()
+          }
+
+          this.update = () => {
+            $http.get("/api/percentages").then((result) => {
+              if (!window.stopped) {
+                let data = result.data.percentages
+                this.angry = data.ANGRY;
+                this.wow = data.WOW;
+                this.love = data.LOVE;
+                this.like = data.LIKE;
+              }
+            })
+            .finally(()=>{
+              $timeout(this.update, 2000)
+            })
+          }
+
           window.addEventListener("message", (event) => {
-            if (event.data && event.data.type === "percentages") {
-                $scope.$apply(() => {
-                    // console.log(`works~!!`, event.data.percentages)
-                  let percentages = event.data.percentages
-                  for (let key in percentages) if (percentages.hasOwnProperty(key)) {
-                    this[key.toLowerCase()] = percentages[key]
-                  }
-                })
+            if (event.data && event.data.type === "stop") {
+              window.stopped = true;
+            }
+          }, false);
+
+          window.addEventListener("message", (event) => {
+            if (event.data && event.data.type === "start") {
+              window.stopped = false;
+              console.log(`resumed...`)
             }
           }, false);
         }

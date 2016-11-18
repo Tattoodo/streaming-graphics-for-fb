@@ -7,7 +7,7 @@ angular
     });
 
 // settings
-angular.module('app').component('upNext', {
+angular.module('app').component('reactionsObjectId', {
         template: `<div layout="row">
     <div flex="initial">
      <md-input-container>
@@ -17,27 +17,48 @@ angular.module('app').component('upNext', {
     </div>
     <div  flex="initial">
         <p>
-            <md-button ng-click="$ctrl.run(objectId)" ng-disabled="$ctrl.loading">Run</md-button>
+            <md-button ng-click="$ctrl.run(objectId); $ctrl.start(); $ctrl.running=true" ng-show="!$ctrl.running" ng-disabled="$ctrl.loading">Start</md-button>
+            <md-button ng-click="$ctrl.stop(); $ctrl.running=false" ng-show="$ctrl.running" ng-disabled="$ctrl.loading">Stop</md-button>
     </div>
 </div>`,
-        controller: function ($http, Storage) {
+        controller: function ($http, $timeout, Storage) {
             let loading = 0
 
-            this.run = function (objectId) {
+            this.running = false
 
+            let delay = 10000
+
+            this.start = function () {
+              Storage.sceneRef.postMessage({
+                type: "start",
+              }, location + 'scene1.html');
+            }
+
+            this.run = function (objectId) {
                 if ((objectId+"").indexOf(`http`) > -1) {
                   objectId = this.extractObjectId(objectId)
                 }
-                console.assert(!!objectId, "Object should be number");
-                loading++
-                $http.get(`/api/start/${objectId}?access_token=${Storage.accessToken}`).finally(() => {
-                    loading--
 
-                    Storage.sceneRef.postMessage({
-                      type: "percentages",
-                      percentages: {LIKE: 25, LOVE: 25.1, WOW: 25.52}
-                    }, location + 'scene1.html');
+                loading++
+                $http.get(`/api/start/${objectId}?access_token=${Storage.accessToken}`).then(()=>{
+                  if (this.running) {
+                    $timeout( ()=>{
+                      this.run(objectId)
+                    }, delay)
+                  }
+                }, ()=> {
+                  this.running = false
+                  console.log("Something went wrong", this.running);
+                }).finally(() => {
+                    loading--
                 })
+            }
+
+            this.stop = () => {
+              Storage.sceneRef.postMessage({
+                type: "stop",
+                percentages: {LIKE: 25, LOVE: 25.1, WOW: 25.52}
+              }, location + 'scene1.html');
             }
 
             this.extractObjectId = function(permalink) {
@@ -66,27 +87,31 @@ angular.module('app').component('upNext', {
 
 
 
-angular.module('app').component('deadline', {
+angular.module('app').component('x-deadline', {
         template: `
 <div layout="row" layout-align="left center" layout-margin="10">
     <div flex="initial">
         Chroma key (color) 
     </div>
     <div flex="initial">        
-        <input type="color" ng-model="$ctrl.input">                
+        <input type="color" ng-model="input" ng-init="input = $ctrl.input">                
     </div>
     <div flex="initial" ng-bind="$ctrl.input"></div>
     <div flex="initial">        
-        <button class="md-button" ng-click="$ctrl.apply($ctrl.input)">Apply</button><br>         
+        <button class="md-button" ng-click="$ctrl.apply(input)">Apply</button><br>         
     </div>
 </div>
 `,
         controller: function (Storage) {
-            this.defaultDate = "#0f0";
-            this.input = localStorage.deadline || this.defaultDate;
+            this.defaultColor = "#0f0";
+
+            Object.defineProperty(this, `input`, {
+              get: () => localStorage.bgcolor || this.defaultColor,
+              set: (value) => localStorage.bgcolor = value
+            })
 
             this.apply = function (value) {
-                localStorage.deadline = value;
+                this.input = value
                 if (value) {
                     if (Storage.sceneRef) {
                         Storage.sceneRef.postMessage({
