@@ -39,18 +39,20 @@
       xfbml      : false,
       version    : 'v2.8'
     });
+  };
 
+  function fblogin() {
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
         let accessToken = response.authResponse.accessToken
-        console.info(accessToken)
         localStorage.access_token = accessToken
       }
       else {
         FB.login();
       }
     });
-  };
+  }
+
   (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {return;}

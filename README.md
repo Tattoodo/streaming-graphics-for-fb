@@ -14,11 +14,11 @@ first run the NodeJS program
 
 then, in a new terminal, start chrome in app mode with this command (for Mac OS)
 
-    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --app=http://localhost:8080
+    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --app=http://localhost.studio42.dk:8080
 
 on windows, start chrome this way
 
-    chrome.exe --app=http://localhost:8080
+    chrome.exe --app=http://localhost.studio42.dk:8080
 
 ## Stuff
 

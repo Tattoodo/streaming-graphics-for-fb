@@ -134,7 +134,9 @@ angular.module('app').component('x-deadline', {
 
 // open scene button
 angular.module('app').component('openScene', {
-        template: `<button ng-click="$ctrl.open()"                           
+        template: `
+                    <button class="md-button" onclick="fblogin()">Facebook login</button>
+                    <button ng-click="$ctrl.open()"                           
                            class="md-button md-raised md-primary">open scene</button>
                     <span ng-bind="$ctrl.isConnected() ? 'Connected' : 'Disconnected'"></span>`,
         controller: function (Storage, $window) {
