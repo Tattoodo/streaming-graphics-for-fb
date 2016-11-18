@@ -16,7 +16,7 @@ let Reaction = {
   SAD: `SAD`
 }
 
-let types = [ Reaction.LOVE, Reaction.LIKE, Reaction.ANGRY, Reaction.WOW ]
+let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW ]
 
 let lastObjectId = 0
 
