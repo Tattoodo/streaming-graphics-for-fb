@@ -73,10 +73,7 @@ app.get('/start/:objectId/:since', (req, res) => {
 
   let cacheFile = path.join(__dirname, '/download/', md5(lastObjectId) + '.json')
 
-  fs.unlink(cacheFile, (err) => {
-    if (err) {
-      console.log(err)
-    }
+
 
     loadNext(url).then((result) => {
       console.log('--- results: ' + result.data.length)
@@ -101,7 +98,6 @@ app.get('/start/:objectId/:since', (req, res) => {
       console.log(reason)
       res.sendStatus(500)
     })
-  })
 
 })
 
