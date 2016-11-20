@@ -33,7 +33,7 @@ angular.module('app').component('reactionsObjectId', {
             }
 
             this.start = function () {
-              localStorage.started = new Date().toISOString()
+              Storage.started = new Date().toISOString()
 
               Storage.sceneRef.postMessage({
                 type: "start",
@@ -45,7 +45,7 @@ angular.module('app').component('reactionsObjectId', {
                   objectId = this.extractObjectId(objectId)
                 }
 
-                let since = (localStorage.started) ? localStorage.started : 0;
+                let since = (Storage.started) ? Storage.started : 0;
 
                 loading++
                 $http.get(`/api/start/${objectId}/${since}?access_token=${Storage.accessToken}`).then(()=>{
@@ -147,4 +147,8 @@ function Storage() {
 Object.defineProperty(Storage.prototype, `accessToken`, {
   get: () => localStorage.access_token,
   set: (value) => localStorage.access_token = value
+})
+Object.defineProperty(Storage.prototype, `started`, {
+  get: () => localStorage.started,
+  set: (value) => localStorage.started = value
 })
