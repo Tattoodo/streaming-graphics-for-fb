@@ -2,11 +2,10 @@ html, body {
     background-color: #0f0;
     font: bold 16px/150% Roboto, "Helvetica Neue", sans-serif;
 }
+
 body {
     margin: 0;
 }
-
-
 
 .cell {
     box-shadow: #fff -1px -1px 0px;
@@ -35,12 +34,15 @@ body {
 .reaction__sprite--like {
     background-position-x: 0;
 }
+
 .reaction__sprite--love {
     background-position-x: -79px;
 }
+
 .reaction__sprite--haha {
     background-position-x: -157px;
 }
+
 .reaction__sprite--wow {
     background-position-x: -235px;
 }
