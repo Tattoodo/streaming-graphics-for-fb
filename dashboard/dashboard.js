@@ -137,17 +137,20 @@ angular.module('app').component('openScene', {
 
 
 // Storage
-angular.module('app').service('Storage', Storage);
-function Storage() {
-}
-Object.defineProperty(Storage.prototype, `accessToken`, {
-  get: () => localStorage.access_token,
-  set: (value) => localStorage.access_token = value
-})
-Object.defineProperty(Storage.prototype, `started`, {
-  get: () => localStorage.started,
-  set: (value) => localStorage.started = value
-})
+angular.module('app').service('Storage', class Storage {
+  static get accessToken () {
+    return localStorage.access_token
+  }
+  static set accessToken (value) {
+    localStorage.access_token = value
+  }
+  static get started () {
+    return localStorage.started
+  }
+  static set started(value) {
+    localStorage.started = value
+  }
+});
 
 class SceneState {
   get target () {
