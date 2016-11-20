@@ -48,7 +48,6 @@ app.get('/percentages', (req, res) => {
     return
   }
 
-
   let cacheFile = path.join(__dirname, '/download/', md5(lastObjectId) + '.json')
 
   getReactions(cacheFile, types).then(
@@ -66,30 +65,28 @@ app.get('/percentages', (req, res) => {
 
 app.get('/start/:objectId/:since', (req, res) => {
   let objectId = req.params.objectId
-  let since = Math.round( new Date((req.params.since) ? req.params.since : 0).getTime() / 1000 )
+  let since = Math.round(new Date((req.params.since) ? req.params.since : 0).getTime() / 1000)
   let url = `/${objectId}/reactions?fields=type&limit=500&since=${since}&access_token=${req.query.access_token}`
 
   console.log(url)
 
   let cacheFile = path.join(__dirname, '/download/', md5(lastObjectId) + '.json')
 
+  loadNext(url).then((result) => {
+    console.log('--- results: ' + result.data.length)
+    if (result.data.length < 10) {
+      console.log(result)
+      console.log('---')
+    }
 
-
-    loadNext(url).then((result) => {
-      console.log('--- results: ' + result.data.length)
-      if (result.data.length < 10) {
-        console.log(result)
-        console.log('---')
-      }
-
-      let dbFormat = new ReactionsSerialized()
-      dbFormat.data = result.data
-      dbFormat.cursors = result.cursors
-      return saveReactions(dbFormat, cacheFile)
-    }, (reason) => {
-      console.log(reason)
-      res.sendStatus(500)
-    })
+    let dbFormat = new ReactionsSerialized()
+    dbFormat.data = result.data
+    dbFormat.cursors = result.cursors
+    return saveReactions(dbFormat, cacheFile)
+  }, (reason) => {
+    console.log(reason)
+    res.sendStatus(500)
+  })
     .then(function () {
       lastObjectId = objectId
       console.log('ready to serve ' + lastObjectId + ' saved ' + cacheFile)
