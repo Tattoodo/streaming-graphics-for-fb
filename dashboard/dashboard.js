@@ -101,51 +101,6 @@ angular.module('app').component('reactionsObjectId', {
 
 
 
-angular.module('app').component('x-deadline', {
-        template: `
-<div layout="row" layout-align="left center" layout-margin="10">
-    <div flex="initial">
-        Chroma key (color) 
-    </div>
-    <div flex="initial">        
-        <input type="color" ng-model="input" ng-init="input = $ctrl.input">                
-    </div>
-    <div flex="initial" ng-bind="$ctrl.input"></div>
-    <div flex="initial">        
-        <button class="md-button" ng-click="$ctrl.apply(input)">Apply</button><br>         
-    </div>
-</div>
-`,
-        controller: function (Storage) {
-            this.defaultColor = "#0f0";
-
-            Object.defineProperty(this, `input`, {
-              get: () => localStorage.bgcolor || this.defaultColor,
-              set: (value) => localStorage.bgcolor = value
-            })
-
-            this.apply = function (value) {
-                this.input = value
-                if (value) {
-                    if (Storage.sceneRef) {
-                        Storage.sceneRef.postMessage({
-                            type: "bgcolor",
-                            color: localStorage.deadline,
-                        }, location + 'scene1.html');
-                    }
-                    else {
-                        console.warn("deadline sending: scene not open?");
-                    }
-                }
-            }
-
-        }
-    }
-);
-
-
-
-
 // open scene button
 angular.module('app').component('openScene', {
         template: `
