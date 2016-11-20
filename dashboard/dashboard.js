@@ -29,17 +29,15 @@ angular.module('app').component('reactionsObjectId', {
             let delay = 10000 // scraping interval
 
             this.isOpen = function () {
-              return !!window.scene1
+              return Storage.sceneRef !== null
             }
 
             this.start = function () {
               localStorage.started = new Date().toISOString()
 
-              if (Storage.sceneRef) {
-                Storage.sceneRef.postMessage({
-                  type: "start",
-                }, location + 'scene1.html');
-              }
+              Storage.sceneRef.postMessage({
+                type: "start",
+              }, location + 'scene1.html');
             }
 
             this.run = function (objectId) {
@@ -114,7 +112,6 @@ angular.module('app').component('openScene', {
                     <span ng-bind="$ctrl.isConnected() ? 'Connected' : 'Disconnected'"></span>`,
         controller: function (Storage, $window, $scope) {
             this.open = function () {
-              window.scene1 = true
                 Storage.sceneRef = $window.open('scene1.html', '_blank',
                     'width=1024,height=576,location=no,status=no,menubar=no'); // note the window dimensions of the scene is modified by the scene itself
             };
