@@ -1,13 +1,6 @@
-@font-face {
-    font-family: 'gotham_boldregular';
-    src: url('fonts/gothambold.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
 html, body {
     background-color: #0f0;
-    font: normal 16px/150% 'gotham_boldregular', "Comic Sans MS", fantasy;
+    font: bold 16px/150% Roboto, "Helvetica Neue", sans-serif;
 }
 body {
     margin: 0;
