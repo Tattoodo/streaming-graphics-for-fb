@@ -7,33 +7,6 @@ body {
 }
 
 
-.red-fade {
-    animation: animationFrames ease-in .3s;
-    animation-iteration-count: 1;
-}
-@keyframes animationFrames {
-    0% {
-        color: #ff2222;
-    }
-    100% {
-        color: inherit;
-    }
-}
-
-.green-fade {
-    animation: animationFrames2 ease-in .3s;
-    animation-iteration-count: 1;
-}
-@keyframes animationFrames2 {
-    0% {
-        color: #249642;
-    }
-    100% {
-        color: inherit;
-    }
-}
-
-
 
 .cell {
     box-shadow: #fff -1px -1px 0px;
