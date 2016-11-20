@@ -21,7 +21,7 @@ angular.module('app').component('reactionsObjectId', {
             <md-button ng-click="$ctrl.stop(); $ctrl.running=false" ng-show="$ctrl.running" ng-disabled="$ctrl.loading" ng-bind="($ctrl.loading) ? 'loading...' : 'stop'"></md-button>
     </div>
 </div>`,
-        controller: function ($http, $timeout, Storage) {
+        controller: function ($http, $timeout, Storage, SceneState) {
             let loading = 0
 
             this.running = false
@@ -29,15 +29,13 @@ angular.module('app').component('reactionsObjectId', {
             let delay = 10000 // scraping interval
 
             this.isOpen = function () {
-              return Storage.sceneRef !== null
+              return SceneState.sceneRef !== null
             }
 
             this.start = function () {
               Storage.started = new Date().toISOString()
 
-              Storage.sceneRef.postMessage({
-                type: "start",
-              }, location + 'scene1.html');
+              SceneState.postMessage(`start`);
             }
 
             this.run = function (objectId) {
@@ -67,10 +65,9 @@ angular.module('app').component('reactionsObjectId', {
                 loading--
               });
 
-              Storage.sceneRef.postMessage({
-                type: "stop",
+              SceneState.postMessage(`stop`, {
                 percentages: {LIKE: 25, LOVE: 25.1, WOW: 25.52}
-              }, location + 'scene1.html');
+              });
             }
 
             this.extractObjectId = function(permalink) {
@@ -110,9 +107,9 @@ angular.module('app').component('openScene', {
                     <button ng-click="$ctrl.open()"                           
                            class="md-button md-raised md-primary">open scene</button>
                     <span ng-bind="$ctrl.isConnected() ? 'Connected' : 'Disconnected'"></span>`,
-        controller: function (Storage, $window, $scope) {
+        controller: function (SceneState, Storage, $window, $scope) {
             this.open = function () {
-                Storage.sceneRef = $window.open('scene1.html', '_blank',
+                SceneState.sceneRef = $window.open(SceneState.target, '_blank',
                     'width=1024,height=576,location=no,status=no,menubar=no'); // note the window dimensions of the scene is modified by the scene itself
             };
 
@@ -132,7 +129,7 @@ angular.module('app').component('openScene', {
             }
 
             this.isConnected = function () {
-                return !!Storage.sceneRef;
+                return !!SceneState.sceneRef;
             }
         }
     }
@@ -142,7 +139,6 @@ angular.module('app').component('openScene', {
 // Storage
 angular.module('app').service('Storage', Storage);
 function Storage() {
-  this.sceneRef = null;
 }
 Object.defineProperty(Storage.prototype, `accessToken`, {
   get: () => localStorage.access_token,
@@ -152,3 +148,27 @@ Object.defineProperty(Storage.prototype, `started`, {
   get: () => localStorage.started,
   set: (value) => localStorage.started = value
 })
+
+class SceneState {
+  get target () {
+    return location + 'scene1.html'
+  }
+
+  get sceneRef() {
+    return this._sceneRef || null
+  }
+  set sceneRef(value) {
+    this._sceneRef = value
+  }
+
+  postMessage(type, data) {
+    this._sceneRef.postMessage(new SceneState.Message(type, data), this.target);
+  }
+}
+SceneState.Message = class {
+  constructor (type, data) {
+    this.type = type
+    this.data = data
+  }
+}
+angular.module('app').service('SceneState', SceneState);
