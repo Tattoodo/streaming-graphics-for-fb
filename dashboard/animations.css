@@ -1,6 +1,7 @@
 .animation-pulsate {
-    animation: animationFrames3 cubic-bezier(.77,0,.18,1) 1.45s infinite;
+    animation: animationFrames3 cubic-bezier(.77, 0, .18, 1) 1.45s infinite;
 }
+
 @keyframes animationFrames3 {
     0% {
         transform: scale(1);
