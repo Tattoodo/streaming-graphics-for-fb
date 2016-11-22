@@ -106,10 +106,9 @@ angular.module('app').component('openScene', {
                     <button ng-click="$ctrl.open()"                           
                            class="md-button md-raised md-primary">open scene</button>
                     <span ng-bind="$ctrl.isConnected() ? 'Connected' : 'Disconnected'"></span>`,
-  controller: function (Scene, Storage, $window, $scope) {
+  controller: function (Scene, Storage, $scope) {
     this.open = function () {
-      Scene.sceneRef = $window.open(Scene.target, '_blank',
-        'width=1024,height=576,location=no,status=no,menubar=no') // note the window dimensions of the scene is modified by the scene itself
+      Scene.open()
     }
 
     this.fblogin = () => {
@@ -152,8 +151,12 @@ angular.module('app').service('Storage', class Storage {
 })
 
 class Scene {
-  get target () {
-    return location + 'scene1.html'
+  constructor ($window, $location) {
+    this.target = $location.absUrl() + 'scene1.html'
+
+    this.open = () => {
+      this.sceneRef = $window.open(this.target, '_blank', 'width=1024,height=576,location=no,status=no,menubar=no')
+    }
   }
 
   get sceneRef () {
