@@ -21,7 +21,7 @@ angular.module('app').component('reactionsObjectId', {
             <md-button ng-click="$ctrl.stop(); $ctrl.running=false" ng-show="$ctrl.running" ng-disabled="$ctrl.loading" ng-bind="($ctrl.loading) ? 'loading...' : 'stop'"></md-button>
     </div>
 </div>`,
-  controller: function ($http, $timeout, Storage, SceneState) {
+  controller: function ($http, $timeout, Storage, Scene) {
     let loading = 0
 
     this.running = false
@@ -29,13 +29,13 @@ angular.module('app').component('reactionsObjectId', {
     let delay = 10000 // scraping interval
 
     this.isOpen = function () {
-      return SceneState.sceneRef !== null
+      return Scene.sceneRef !== null
     }
 
     this.start = function () {
       Storage.started = new Date().toISOString()
 
-      SceneState.postMessage(`start`)
+      Scene.postMessage(`start`)
     }
 
     this.run = function (objectId) {
@@ -65,7 +65,7 @@ angular.module('app').component('reactionsObjectId', {
         loading--
       })
 
-      SceneState.postMessage(`stop`, {
+      Scene.postMessage(`stop`, {
         percentages: { LIKE: 25, LOVE: 25.1, WOW: 25.52 }
       })
     }
@@ -106,9 +106,9 @@ angular.module('app').component('openScene', {
                     <button ng-click="$ctrl.open()"                           
                            class="md-button md-raised md-primary">open scene</button>
                     <span ng-bind="$ctrl.isConnected() ? 'Connected' : 'Disconnected'"></span>`,
-  controller: function (SceneState, Storage, $window, $scope) {
+  controller: function (Scene, Storage, $window, $scope) {
     this.open = function () {
-      SceneState.sceneRef = $window.open(SceneState.target, '_blank',
+      Scene.sceneRef = $window.open(Scene.target, '_blank',
         'width=1024,height=576,location=no,status=no,menubar=no') // note the window dimensions of the scene is modified by the scene itself
     }
 
@@ -127,7 +127,7 @@ angular.module('app').component('openScene', {
     }
 
     this.isConnected = function () {
-      return !!SceneState.sceneRef
+      return !!Scene.sceneRef
     }
   }
 })
@@ -151,7 +151,7 @@ angular.module('app').service('Storage', class Storage {
   }
 })
 
-class SceneState {
+class Scene {
   get target () {
     return location + 'scene1.html'
   }
@@ -165,13 +165,13 @@ class SceneState {
   }
 
   postMessage (type, data) {
-    this._sceneRef.postMessage(new SceneState.Message(type, data), this.target)
+    this._sceneRef.postMessage(new Scene.Message(type, data), this.target)
   }
 }
-SceneState.Message = class {
+Scene.Message = class {
   constructor (type, data) {
     this.type = type
     this.data = data
   }
 }
-angular.module('app').service('SceneState', SceneState)
+angular.module('app').service('Scene', Scene)
