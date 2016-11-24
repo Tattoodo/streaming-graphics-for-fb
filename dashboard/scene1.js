@@ -9,7 +9,7 @@ let Reaction = {
   SAD: `SAD`
 }
 
-let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW ]
+let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA ]
 
 // resizeViewPort(1024, 576);
 
@@ -117,16 +117,11 @@ angular.module('app').component('cell', {
 
 angular.module('app').component('percentages', {
         template: `
-                
-    <div layout="row" style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.LIKE" reaction="like" class="cell" pulsate="$ctrl.isBiggest('LIKE')"></cell>
-        <cell layout="column" flex="50" number="$ctrl.LOVE" reaction="love" class="cell" pulsate="$ctrl.isBiggest('LOVE')"></cell>
+    <div layout="row" style="height: 100%;">
+        <cell layout="column" flex number="$ctrl.LIKE" reaction="like" class="cell" pulsate="$ctrl.isBiggest('LIKE')"></cell>
+        <cell layout="column" flex number="$ctrl.LOVE" reaction="love" class="cell" pulsate="$ctrl.isBiggest('LOVE')"></cell>
+        <cell layout="column" flex number="$ctrl.HAHA" reaction="haha" class="cell" pulsate="$ctrl.isBiggest('HAHA')"></cell>
     </div>        
-    <div layout="row"  style="height: 50%;">
-        <cell layout="column" flex="50" number="$ctrl.HAHA" reaction="haha" class="cell" pulsate="$ctrl.isBiggest('HAHA')"></cell>
-        <cell layout="column" flex="50" number="$ctrl.WOW" reaction="wow" class="cell" pulsate="$ctrl.isBiggest('WOW')"></cell>
-    </div>
-
 `,
         controller: function ($scope, $http, $timeout) {
 
