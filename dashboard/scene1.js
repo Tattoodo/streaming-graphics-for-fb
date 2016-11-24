@@ -134,7 +134,6 @@ angular.module('app').component('percentages', {
               let sum = types.reduce((key, currentValue) => {
                 return ((this[key] !== undefined) ? this[key] : 0) + this[currentValue]
               }, 0)
-              console.log(sum)
               if (sum === 0) {
                 return false
               }
