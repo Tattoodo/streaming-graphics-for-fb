@@ -8,7 +8,7 @@ app.use(`/api/`, api)
 
 app.use(`/`, express.static(path.join(__dirname, `/../dashboard`)))
 
-function requireAdmin (req, res, next) {
+function filterFileTypes (req, res, next) {
   console.log(req.path)
   if (req.path.indexOf(`.js`) > -1 ||
     req.path.indexOf(`.css`) > -1) {
@@ -19,7 +19,7 @@ function requireAdmin (req, res, next) {
   }
 }
 
-app.use(`/node_modules/`, requireAdmin)
+app.use(`/node_modules/`, filterFileTypes)
 app.use(`/node_modules/`, express.static(path.join(__dirname, `/../node_modules`)))
 
 app.listen(8080, function () {

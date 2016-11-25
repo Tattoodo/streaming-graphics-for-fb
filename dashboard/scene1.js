@@ -1,14 +1,3 @@
-let Reaction = {
-  NONE: `NONE`,
-  HAHA: `HAHA`,
-  THANKFUL: `THANKFUL`,
-  ANGRY: `ANGRY`,
-  WOW: `WOW`,
-  LIKE: `LIKE`,
-  LOVE: `LOVE`,
-  SAD: `SAD`
-}
-
 let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA ]
 
 // resizeViewPort(1024, 576);

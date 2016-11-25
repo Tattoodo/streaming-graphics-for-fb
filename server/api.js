@@ -3,23 +3,28 @@ const md5 = require('md5')
 const express = require('express')
 const rimraf = require(`rimraf`)
 const { loadNext, saveReactions, getReactions, ReactionsSerialized, Reactions } = require('./fetch-data')
+const Reaction = require(`../dashboard/reaction`)
 
 var app = express()
-
-let Reaction = {
-  NONE: `NONE`,
-  HAHA: `HAHA`,
-  THANKFUL: `THANKFUL`,
-  ANGRY: `ANGRY`,
-  WOW: `WOW`,
-  LIKE: `LIKE`,
-  LOVE: `LOVE`,
-  SAD: `SAD`
-}
 
 let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW ]
 
 let lastObjectId = 0
+
+app.put(`/reaction_types/:reactions`, (req, res) => {
+  let reactions = req.params.reactions
+
+  if (reactions) {
+    let list = reactions.split(`,`)
+    let validated = list.filter((item) => {
+      return !!Reaction[item]
+    })
+    res.json(validated)
+  }
+  else {
+    res.sendStatus(400)
+  }
+})
 
 app.get(`/reactions/:objectId`, (req, res) => {
   if (req.params.objectId) {

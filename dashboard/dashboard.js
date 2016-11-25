@@ -1,3 +1,5 @@
+
+
 angular
   .module('app', [ 'ngMaterial' ])
   .config(function ($mdThemingProvider) {
@@ -8,7 +10,7 @@ angular
 
 // settings
 angular.module('app').component('reactionsObjectId', {
-    template: `<div layout="row">
+  template: `<div layout="row">
     <div flex="initial">
      <md-input-container>
         <label>Permalink or object ID</label>
@@ -93,6 +95,65 @@ angular.module('app').component('reactionsObjectId', {
       }
     })
   }
+})
+
+// settings
+angular.module('app').component('selectReactions', {
+  template: `
+<h4>Reactions</h4>
+<div  class="md-padding">
+  <div layout="row" layout-wrap>
+    <div flex="100" layout="column">
+        <div layout="row" layout-wrap flex>
+            <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in items">
+              <md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
+               {{ item }}
+              </md-checkbox>
+            </div>
+        </div>
+      </div>  
+  </div>
+  <md-button ng-click="apply()">apply</md-button>
+</div>
+
+`,
+  controller: function ($scope, $http) {
+
+    let reactions = []
+    angular.forEach(Reaction, (item) => {
+      reactions.push(item);
+    })
+
+    $scope.items = reactions;
+    $scope.selected = reactions.slice(0, 1);
+
+    $scope.toggle = function (item, list) {
+      var idx = list.indexOf(item);
+      if (idx > -1) {
+        list.splice(idx, 1);
+      }
+      else {
+        list.push(item);
+      }
+    };
+
+    $scope.apply = function () {
+      console.log($scope.selected)
+      $http.put(`/api/reaction_types/${$scope.selected.join(`,`)}`, ``).then(function (response) {
+        $scope.selected = response.data
+      }, console.error);
+    }
+
+    $scope.exists = function (item, list) {
+      return list.indexOf(item) > -1;
+    };
+
+    $scope.isChecked = function () {
+      return $scope.selected.length === $scope.items.length;
+    };
+  }
+
+
 })
 
 // open scene button

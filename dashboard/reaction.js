@@ -1,3 +1,10 @@
-/**
- * Created by julian on 25/11/16.
- */
+const Reaction = {
+  LIKE: `LIKE`,
+  LOVE: `LOVE`,
+  HAHA: `HAHA`,
+  WOW: `WOW`,
+  SAD: `SAD`,
+  ANGRY: `ANGRY`
+}
+
+module.exports = Reaction
