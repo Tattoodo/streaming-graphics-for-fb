@@ -34,5 +34,4 @@ node_modules
 
 .idea
 
-bower_components
 server/download/*.json

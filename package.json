@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "bower": "1.8.0",
+    "angular": "1.5.9",
+    "angular-animate": "1.5.9",
+    "angular-aria": "1.5.9",
+    "angular-count-to": "git+https://github.com/sparkalow/angular-count-to.git",
+    "angular-material": "1.1.1",
     "express": "4.14.0",
     "fb": "1.1.1",
     "md5": "^2.2.1",
@@ -17,9 +21,8 @@
     "eslint-plugin-standard": "^2.0.1"
   },
   "scripts": {
-    "postinstall": "node node_modules/bower/bin/bower install",
     "start": "node server/index.js",
-    "prestart": "npm i"
+    "prestart": "npm install"
   },
   "repository": {
     "type": "git",
