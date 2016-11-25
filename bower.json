@@ -3,7 +3,6 @@
   "description": "",
   "main": "index.js",
   "authors": [
-    "Julian <julian@studio42.dk>"
   ],
   "license": "n/a",
   "homepage": "https://github.com/johncoffee/ngj16-streaming-graphics",
@@ -19,6 +18,6 @@
   "dependencies": {
     "angular-material": "1.1.1",
     "moment": "2.17.0",
-    "angular-count-to": "git@github.com:fluenti/angular-count-to.git"
+    "angular-count-to": "*"
   }
 }
