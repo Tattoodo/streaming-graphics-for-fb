@@ -101,7 +101,6 @@ angular.module('app').component('reactionsObjectId', {
 angular.module('app').component('selectReactions', {
   template: `
 <h4>Reactions</h4>
-<div  class="md-padding">
   <div layout="row" layout-wrap>
     <div flex="100" layout="column">
         <div layout="row" layout-wrap flex>
@@ -114,7 +113,6 @@ angular.module('app').component('selectReactions', {
       </div>  
   </div>
   <md-button ng-click="apply()">apply</md-button>
-</div>
 
 `,
   controller: function ($scope, $http, Storage) {
