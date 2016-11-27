@@ -45,3 +45,11 @@ body {
 .reaction__sprite--wow {
     background-position-x: -235px;
 }
+
+.reaction__sprite--angry {
+    background-position-x: -394px;
+}
+
+.reaction__sprite--sad {
+    background-position-x: -315px;
+}
