@@ -7,7 +7,7 @@ const Reaction = require(`../dashboard/reaction`)
 
 var app = express()
 
-let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW ]
+let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW, Reaction.SAD, Reaction.ANGRY ]
 
 let lastObjectId = 0
 
@@ -19,6 +19,9 @@ app.put(`/reaction_types/:reactions`, (req, res) => {
     let validated = list.filter((item) => {
       return !!Reaction[item]
     })
+
+    types = validated
+
     res.json(validated)
   }
   else {

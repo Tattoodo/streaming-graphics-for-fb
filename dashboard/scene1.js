@@ -1,4 +1,4 @@
-let types = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA ]
+let types = [ ]
 
 // resizeViewPort(1024, 576);
 
@@ -90,7 +90,7 @@ angular.module('app').component('cell', {
     <div class="cell__number" 
          ng-class="{'animation-pulsate': $ctrl.pulsate}">
         <div class="reaction ">
-            <div class="reaction__sprite reaction__sprite--{{::$ctrl.reaction}}"></div>
+            <div class="reaction__sprite reaction__sprite--{{::$ctrl.reaction.toLowerCase()}}"></div>
         </div>         
         <animated-text 
               count-to="{{$ctrl.number}}"                            
@@ -106,11 +106,23 @@ angular.module('app').component('cell', {
 
 angular.module('app').component('percentages', {
         template: `
-    <div layout="row" style="height: 100%;">
-        <cell layout="column" flex number="$ctrl.LIKE" reaction="like" class="cell" pulsate="$ctrl.isBiggest('LIKE')"></cell>
-        <cell layout="column" flex number="$ctrl.LOVE" reaction="love" class="cell" pulsate="$ctrl.isBiggest('LOVE')"></cell>
-        <cell layout="column" flex number="$ctrl.HAHA" reaction="haha" class="cell" pulsate="$ctrl.isBiggest('HAHA')"></cell>
-    </div>        
+    <div layout="row" style="height: 100%;" ng-if="$ctrl.keys.length <= 3 || $ctrl.keys.length === 5 || $ctrl.keys.length > 6">
+        <cell ng-repeat="key in $ctrl.keys track by key"
+              number="$ctrl[key]" reaction="{{key}}" pulsate="$ctrl.isBiggest(key)"
+              layout="column" class="cell" flex></cell>
+    </div>
+            
+    <div layout="row" layout-wrap style="height: 100%;" ng-if="$ctrl.keys.length === 4">
+        <cell ng-repeat="key in $ctrl.keys track by key"
+              number="$ctrl[key]" reaction="{{key}}" pulsate="$ctrl.isBiggest(key)"
+              layout="column" class="cell" flex="50" style="height: 50%;"></cell>
+    </div>
+    
+    <div layout="row" layout-wrap style="height: 100%;" ng-if="$ctrl.keys.length === 6">
+        <cell ng-repeat="key in $ctrl.keys track by key"
+              number="$ctrl[key]" reaction="{{key}}" pulsate="$ctrl.isBiggest(key)"
+              layout="column" class="cell" flex="33" style="height: 50%;"></cell>
+    </div>
 `,
         controller: function ($scope, $http, $timeout) {
 
@@ -137,6 +149,12 @@ angular.module('app').component('percentages', {
             $http.get("/api/percentages").then((result) => {
               if (!window.stopped) {
                 let data = result.data.percentages
+
+                types = result.data.keys.filter((key) => {
+                  console.assert(Reaction[key], "keys should be from the Reaction enum")
+                  return !!Reaction[key]
+                })
+
                 types.forEach((key)=>{
                   this[key] = data[key]
                 })
@@ -146,6 +164,12 @@ angular.module('app').component('percentages', {
               $timeout(this.update, 1000)
             })
           }
+
+          Object.defineProperty(this, 'keys', {
+            get: function () {
+              return types
+            }
+          })
 
           window.addEventListener("message", (event) => {
             if (event.data && event.data.type === "stop") {

@@ -117,15 +117,14 @@ angular.module('app').component('selectReactions', {
 </div>
 
 `,
-  controller: function ($scope, $http) {
+  controller: function ($scope, $http, Storage) {
 
-    let reactions = []
-    angular.forEach(Reaction, (item) => {
-      reactions.push(item);
-    })
+    let allReactions = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW, Reaction.SAD, Reaction.ANGRY ]
+    console.log(allReactions)
 
-    $scope.items = reactions;
-    $scope.selected = reactions.slice(0, 1);
+    $scope.items = allReactions
+    let saved = Storage.reactions
+    $scope.selected = saved || allReactions.slice(0, 2)
 
     $scope.toggle = function (item, list) {
       var idx = list.indexOf(item);
@@ -138,9 +137,9 @@ angular.module('app').component('selectReactions', {
     };
 
     $scope.apply = function () {
-      console.log($scope.selected)
       $http.put(`/api/reaction_types/${$scope.selected.join(`,`)}`, ``).then(function (response) {
         $scope.selected = response.data
+        Storage.reactions = response.data // validated
       }, console.error);
     }
 
@@ -151,6 +150,9 @@ angular.module('app').component('selectReactions', {
     $scope.isChecked = function () {
       return $scope.selected.length === $scope.items.length;
     };
+
+    $scope.apply()
+
   }
 
 
@@ -194,20 +196,50 @@ angular.module('app').component('openScene', {
 
 // Storage
 angular.module('app').service('Storage', class Storage {
-  static get accessToken () {
+  get accessToken () {
     return localStorage.access_token
   }
 
-  static set accessToken (value) {
+  set accessToken (value) {
     localStorage.access_token = value
   }
 
-  static get started () {
+  get reactions () {
+    return this.getJSON(`reactions`)
+  }
+
+  set reactions (value) {
+    this.setJSON(`reactions`, value)
+  }
+
+  get started () {
     return localStorage.started
   }
 
-  static set started (value) {
+  set started (value) {
     localStorage.started = value
+  }
+
+  setJSON (key, value) {
+    let json = (value && typeof value === `object`) ? JSON.stringify(value) : false
+    if (json) {
+      localStorage[key] = json
+    }
+  }
+
+  getJSON (key) {
+    let json = localStorage[key]
+    let parsed = null
+    if (json) {
+      try {
+        parsed = JSON.parse(json)
+      }
+      catch (e) {
+        console.error(e)
+      }
+    }
+
+    return parsed
   }
 })
 

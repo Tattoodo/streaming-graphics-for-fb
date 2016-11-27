@@ -48,8 +48,10 @@ class Reactions {
     this.total = 0
     this.reactionCount = {}
     this.percentages = {}
+    this.keys = []
 
     types.forEach((reaction) => {
+      this.keys.push(reaction)
       this.reactionCount[ reaction ] = 0
       this.percentages[ reaction ] = 0
     })
