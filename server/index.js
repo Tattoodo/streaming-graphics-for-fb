@@ -13,9 +13,8 @@ function filterFileTypes (req, res, next) {
   if (req.path.indexOf(`.js`) > -1 ||
     req.path.indexOf(`.css`) > -1) {
     next()
-  }
-  else {
-    next(new Error("Permission denied."))
+  } else {
+    next(new Error('Permission denied.'))
   }
 }
 
