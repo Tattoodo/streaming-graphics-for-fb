@@ -1,4 +1,4 @@
-
+/* global angular, Reaction, localStorage, FB */
 
 angular
   .module('app', [ 'ngMaterial' ])
@@ -116,7 +116,6 @@ angular.module('app').component('selectReactions', {
 
 `,
   controller: function ($scope, $http, Storage) {
-
     let allReactions = [ Reaction.LIKE, Reaction.LOVE, Reaction.HAHA, Reaction.WOW, Reaction.SAD, Reaction.ANGRY ]
     console.log(allReactions)
 
@@ -125,35 +124,31 @@ angular.module('app').component('selectReactions', {
     $scope.selected = saved || allReactions.slice(0, 2)
 
     $scope.toggle = function (item, list) {
-      var idx = list.indexOf(item);
+      var idx = list.indexOf(item)
       if (idx > -1) {
-        list.splice(idx, 1);
+        list.splice(idx, 1)
+      } else {
+        list.push(item)
       }
-      else {
-        list.push(item);
-      }
-    };
+    }
 
     $scope.apply = function () {
       $http.put(`/api/reaction_types/${$scope.selected.join(`,`)}`, ``).then(function (response) {
         $scope.selected = response.data
         Storage.reactions = response.data // validated
-      }, console.error);
+      }, console.error)
     }
 
     $scope.exists = function (item, list) {
-      return list.indexOf(item) > -1;
-    };
+      return list.indexOf(item) > -1
+    }
 
     $scope.isChecked = function () {
-      return $scope.selected.length === $scope.items.length;
-    };
+      return $scope.selected.length === $scope.items.length
+    }
 
     $scope.apply()
-
   }
-
-
 })
 
 // open scene button
@@ -221,18 +216,17 @@ angular.module('app').service('Storage', class Storage {
   setJSON (key, value) {
     let json = (value && typeof value === `object`) ? JSON.stringify(value) : false
     if (json) {
-      localStorage[key] = json
+      localStorage[ key ] = json
     }
   }
 
   getJSON (key) {
-    let json = localStorage[key]
+    let json = localStorage[ key ]
     let parsed = null
     if (json) {
       try {
         parsed = JSON.parse(json)
-      }
-      catch (e) {
+      } catch (e) {
         console.error(e)
       }
     }
