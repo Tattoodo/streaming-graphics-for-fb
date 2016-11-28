@@ -12,8 +12,7 @@ function loadReactions (url) {
       function (response) {
         if (response.error) {
           reject(response.error)
-        }
-        else {
+        } else {
           resolve(response)
         }
       }
@@ -127,7 +126,6 @@ function loadNext (url, inputPages) {
             resolve(morePages)
           }, reject)
         }, 2000)
-
       } else {
         console.log(`no next page.`)
         resolve(pages)
