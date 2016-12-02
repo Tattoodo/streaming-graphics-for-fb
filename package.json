@@ -24,7 +24,8 @@
   },
   "scripts": {
     "start": "node server/index.js",
-    "prestart": "npm install"
+    "prestart": "npm install",
+    "postinstall": "node scripts/checks.js"
   },
   "repository": {
     "type": "git",
